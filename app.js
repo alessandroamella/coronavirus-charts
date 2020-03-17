@@ -7,6 +7,7 @@ const i18n = require("i18n-express");
 const fetch = require('node-fetch');
 const fs = require('fs');
 const schedule = require('node-schedule');
+const requestIp = require('request-ip');
 require("dotenv").config();
 
 app.set("view engine", "ejs");
@@ -25,6 +26,8 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.connect(process.env.MONGODB_URI, function(){
     console.log("Connected to MongoDB Database!");
 });
+
+app.use(requestIp.mw())
 
 app.use(
     i18n({
@@ -100,10 +103,9 @@ const server = app.listen(process.env.PORT, process.env.IP, function(){
 
 app.get("/", function(req, res){
     try {
-        fetch(`https://ipapi.co/${req.ip}/json/`)
+        fetch(`https://ipapi.co/${req.clientIp}/json/`)
         .then(res => res.json())
         .then(function(json){
-            console.log(json);
             if(json.country_name){
                 res.render("index", { stats: JSON.stringify(stats[json.country_name]), country: json.country_name });
             } else {
