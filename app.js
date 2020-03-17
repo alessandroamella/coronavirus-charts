@@ -103,6 +103,7 @@ app.get("/", function(req, res){
         fetch(`https://ipapi.co/${req.ip}/json/`)
         .then(res => res.json())
         .then(function(json){
+            console.log(json);
             if(json.country_name){
                 res.render("index", { stats: JSON.stringify(stats[json.country_name]), country: json.country_name });
             } else {
