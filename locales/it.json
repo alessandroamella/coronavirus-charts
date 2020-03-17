@@ -1,1 +1,8 @@
-{}
+{
+    "LATEST_STATS": "Ultimi Dati sul Coronavirus",
+    "CONFIRMED": "Casi confermati in",
+    "RECOVERIES": "Guarigioni in",
+    "DEATHS": "Morti in",
+    "CANT_REQUEST": "impossibile richiedere",
+    "ERROR_LETMEKNOW": "Se credi che sia un errore, per favore contattami e fammelo sapere"
+}
