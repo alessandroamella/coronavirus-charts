@@ -41,6 +41,7 @@ $("#country_selector").on("change", function(){
             globalChart.data.datasets.push({
                 label: `${text.CONFIRMED} ${localCountry.name}`,
                 borderColor: getColor(),
+                pointHoverRadius: 10,
                 data: stats.map(stat => stat.confirmed)
             });
 
@@ -127,6 +128,13 @@ var globalChart = new Chart(globalChartElem, {
                     fontColor: "black"
                 }
             }]
+        },
+        elements: {
+            point: {
+                radius: 4,
+                hoverRadius: 7,
+                hitRadius: 10
+            }
         },
         responsive: true,
         responsiveAnimationDuration: 200,
