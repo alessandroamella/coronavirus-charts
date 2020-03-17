@@ -103,13 +103,13 @@ const server = app.listen(process.env.PORT, process.env.IP, function(){
 
 app.get("/", function(req, res){
     try {
-        fetch(`https://ipapi.co/${req.clientIp}/json/`)
+        fetch(`http://ip-api.com/json/${req.clientIp}`)
         .then(res => res.json())
         .then(function(json){
-            if(json.country_name){
-                res.render("index", { stats: JSON.stringify(stats[json.country_name]), country: json.country_name });
+            if(json.country){
+                res.render("index", { stats: JSON.stringify(stats[json.country]), country: {name: json.country, code: json.countryCode.toLowerCase()} });
             } else {
-                res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: "United Kingdom" });
+                res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "uk"} });
             }
         });
     } catch(e){
@@ -117,7 +117,7 @@ app.get("/", function(req, res){
     }
 });
 
-app.get("/:country", function(req, res){
+app.get("/getData/:country", function(req, res){
     let country = req.params.country;
     if(country == "South Korea"){
         country = "Korea, South";
@@ -136,11 +136,6 @@ app.get("/:country", function(req, res){
     } else if(country == "Czech Republic"){
         country = "Czechia";
     }
-    // else if(country == "XXXXX"){
-    //     country = "XXXXX";
-    // } else if(country == "XXXXX"){
-    //     country = "XXXXX";
-    // }
     if(stats[country]){
         res.json(stats[country]);
     } else {
