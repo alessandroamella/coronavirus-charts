@@ -4,12 +4,13 @@
 
 <div class="container mt-3 text-center">
     <div id="section1">
-        <h1>Latest Coronavirus Stats</h1>
+        <h1><%= text.LATEST_STATS %></h1>
         <input id="country_selector" type="text">
         <div class="chart-container" style="height:40vh; width:80vw">
             <canvas id="globalChart"></canvas>
         </div>
         <p id="stats-p" style="display: none;"><%= stats %></p>
+        <p id="texts" style="display: none;"><%= JSON.stringify(text) %></p>
     </div>
 </div>
 

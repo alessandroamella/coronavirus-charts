@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const i18n = require("i18n-express");
-const socket = require("socket.io");
 const fetch = require('node-fetch');
 const fs = require('fs');
 const schedule = require('node-schedule');
@@ -57,32 +56,40 @@ let statSchema = new mongoose.Schema({
 let Stat = mongoose.model("Stat", statSchema);
 
 let fetchData = schedule.scheduleJob("0 0 0 * * *", function(fireDate){
-    console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
-    fetch('https://pomber.github.io/covid19/timeseries.json')
-        .then(res => res.json())
-        .then(function(json){
-            // fs.writeFile(`data/data-${Date.now()}.json`, JSON.stringify(json, null, 2), function(err){{
-            // if (err) throw err;
-            // console.log(`The data file has been saved as data/data-${Date.now()}.json`);
-            stats = json;
-            let countriesData = [];
-            for(data in json){
-                countriesData.push({
-                    country: data,
-                    data: json[data]
+    try {
+        console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+        fetch('https://pomber.github.io/covid19/timeseries.json')
+            .then(res => res.json())
+            .then(function(json){
+                // fs.writeFile(`data/data-${Date.now()}.json`, JSON.stringify(json, null, 2), function(err){{
+                // if (err) throw err;
+                // console.log(`The data file has been saved as data/data-${Date.now()}.json`);
+                stats = json;
+                let countriesData = [];
+                for(data in json){
+                    countriesData.push({
+                        country: data,
+                        data: json[data]
+                    });
+                }
+                let fetchedStats = new Stat({
+                    countries: countriesData
                 });
-            }
-            let fetchedStats = new Stat({
-                countries: countriesData
-            });
-            fetchedStats.save(function(err){if(err){console.log(err);}});
-        // }});
-    });
+                fetchedStats.save(function(err){if(err){console.log(err);}});
+            // }});
+        });
+    } catch(e){
+        throw new Error(e);
+    }
 });
 
-fetch('https://pomber.github.io/covid19/timeseries.json')
-    .then(res => res.json())
-    .then(function(json){stats = json;});
+try {
+    fetch('https://pomber.github.io/covid19/timeseries.json')
+        .then(res => res.json())
+        .then(function(json){stats = json;});
+} catch(e){
+    throw new Error(e);
+}
 
 // SET PUBLIC FOLDER
 app.use(express.static(__dirname + "/public"));
@@ -92,15 +99,19 @@ const server = app.listen(process.env.PORT, process.env.IP, function(){
 });
 
 app.get("/", function(req, res){
-    fetch(`https://ipapi.co/${req.ip}/json/`)
-    .then(res => res.json())
-    .then(function(json){
-        if(json.country_name){
-            res.render("index", { stats: JSON.stringify(stats[json.country_name]), country: json.country_name });
-        } else {
-            res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: "United Kingdom" });
-        }
-    });
+    try {
+        fetch(`https://ipapi.co/${req.ip}/json/`)
+        .then(res => res.json())
+        .then(function(json){
+            if(json.country_name){
+                res.render("index", { stats: JSON.stringify(stats[json.country_name]), country: json.country_name });
+            } else {
+                res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: "United Kingdom" });
+            }
+        });
+    } catch(e){
+        res.send(e);
+    }
 });
 
 app.get("/:country", function(req, res){
@@ -117,9 +128,16 @@ app.get("/:country", function(req, res){
         country = "occupied Palestinian territory";
     } else if(country == "Macedonia"){
         country = "North Macedonia";
-    } else if(country == "Côte dIvoire"){
+    } else if(country == "Côte d’Ivoire"){
         country = "Cote d'Ivoire";
+    } else if(country == "Czech Republic"){
+        country = "Czechia";
     }
+    // else if(country == "XXXXX"){
+    //     country = "XXXXX";
+    // } else if(country == "XXXXX"){
+    //     country = "XXXXX";
+    // }
     if(stats[country]){
         res.json(stats[country]);
     } else {
@@ -129,11 +147,4 @@ app.get("/:country", function(req, res){
 
 app.get("*", function(req, res){
     res.redirect("/");
-});
-
-// Socket setup
-var io = socket(server);
-
-io.on("connection", function(data){
-    socket.emit("ping");
 });

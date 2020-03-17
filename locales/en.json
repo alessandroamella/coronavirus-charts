@@ -1,1 +1,8 @@
-{}
+{
+    "LATEST_STATS": "Latest Coronavirus Stats",
+    "CONFIRMED": "Confirmed cases in",
+    "RECOVERIES": "Recoveries in",
+    "DEATHS": "Deaths in",
+    "CANT_REQUEST": "can't request",
+    "ERROR_LETMEKNOW": "If you believe this is an error, please contact me and let me know"
+}

@@ -1,30 +1,36 @@
 var globalChartElem = document.getElementById('globalChart').getContext('2d');
 
 $("#country_selector").countrySelect({
-    excludeCountries: ["AS", "AO", "AI", "BB", "BZ", "BJ", "BM", "BQ", "BW", "IO", "VG", "BN", "MM", "BI", "CV", "ID", "KM", "CK", "CW", "DJ", "DM", "SV", "ER", "FK", "FO", "FM", "FJ", "GF", "PF", "GI", "GL", "GD", "GU", "GW", "HT", "HK", "KI", "KG", "LA", "LS", "LR", "LY", "MO", "MG", "MW", "ML", "MH", "MU", "YT", "ME", "MS", "MZ", "NR", "AN", "NC", "NI", "NE", "NU", "NF", "KP", "MP", "PW", "PG", "PR", "RE", "BL", "SH", "KN", "MF", "PM", "WS", "ST", "SL", "SX", "SB", "SO", "SS", "SY", "TW", "TJ", "TZ", "BS", "GM", "TL", "TK", "TO", "TM", "TC", "TV", "UG", "VI", "VU", "VA", "WF", "YE", "ZM", "ZW"]
+    excludeCountries: ["AS", "AO", "AI", "AX", "BB", "BZ", "BJ", "BM", "BQ", "BW", "IO", "IM", "VG", "CG", "BN", "MM", "BI", "CC", "CV", "ID", "KM", "CK", "GS", "CW", "CX", "DJ", "DM", "SV", "ER", "FK", "FO", "FM", "FJ", "GF", "PF", "GI", "GL", "GD", "GU", "GW", "HT", "HK", "KI", "KY", "KG", "LA", "LS", "LR", "LY", "MO", "MG", "MW", "ML", "MH", "MU", "YT", "ME", "MS", "MZ", "NR", "AN", "NC", "NI", "NE", "NU", "NF", "KP", "MP", "PW", "PG", "PR", "RE", "BL", "SH", "KN", "MF", "PM", "WS", "ST", "SL", "SX", "SB", "SO", "SS", "SY", "TW", "TJ", "TZ", "BS", "GM", "TL", "TK", "TO", "TM", "TC", "TD", "TV", "UG", "UM", "VI", "VU", "VA", "WF", "EH", "YE", "ZM", "ZW"]
 });
 
 let stats = JSON.parse($("#stats-p").text());
 $("#stats-p").remove();
 // console.log(stats);
+let text = JSON.parse($("#texts").text());
+$("#texts").remove();
 
 $("#country_selector").on("change", function(){
     updateCountry();
     $.ajax({
         url: "/" + localCountry,
-        complete: function(xhr, status){
-            stats = JSON.parse(xhr.responseText);
+        success: function(xhr, status){
+            try {
+                stats = JSON.parse(xhr.responseText);
+            } catch(e){
+                stats = xhr;
+            }
             // console.log(stats);
-            globalChart.data.datasets[0].label = `Confirmed cases in ${localCountry}`;
+            globalChart.data.datasets[0].label = `${text.CONFIRMED} ${localCountry}`;
             globalChart.data.datasets[0].data = stats.map(stat => stat.confirmed);
-            globalChart.data.datasets[1].label = `Recoveries in ${localCountry}`;
+            globalChart.data.datasets[1].label = `${text.RECOVERIES} ${localCountry}`;
             globalChart.data.datasets[1].data = stats.map(stat => stat.recovered);
-            globalChart.data.datasets[2].label = `Deaths in ${localCountry}`;
+            globalChart.data.datasets[2].label = `${text.DEATHS} ${localCountry}`;
             globalChart.data.datasets[2].data = stats.map(stat => stat.deaths);
             globalChart.update();
         },
         error: function(xhr,status,error){
-            alert(`${xhr.status} ${xhr.statusText}, can't request /${localCountry}: ${xhr.responseText}. If you believe this is an error, please contact me and let me know`);
+            alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
         }
     });
     // console.log(localCountry);
@@ -51,15 +57,15 @@ var globalChart = new Chart(globalChartElem, {
     data: {
         labels: stats.map(stat => `${(new Date(stat.date)).getDate()}/${(new Date(stat.date)).getMonth() + 1}`),
         datasets: [{
-            label: `Confirmed cases in ${localCountry}`,
+            label: `${text.CONFIRMED} ${localCountry}`,
             borderColor: '#f76a8c',
             data: stats.map(stat => stat.confirmed)
         }, {
-            label: `Recoveries in ${localCountry}`,
+            label: `${text.RECOVERIES} ${localCountry}`,
             borderColor: '#09fbd3',
             data: stats.map(stat => stat.recovered)
         }, {
-            label: `Deaths in ${localCountry}`,
+            label: `${text.DEATHS} ${localCountry}`,
             borderColor: '#f5d300',
             data: stats.map(stat => stat.deaths)
         }]
