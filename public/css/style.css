@@ -1,0 +1,13 @@
+body {
+    background-color: #36A2FB;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+#section1 {
+    color: white;
+    height: 300px;
+}
+
+.country-name {
+    color: black;
+}

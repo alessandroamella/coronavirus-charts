@@ -1,8 +1,23 @@
 <%- include ('./partials/header') %>
 
-<div class="container">
-    Funziona!
+<link rel="stylesheet" href="/css/countrySelect.min.css">
+
+<div class="container mt-3 text-center">
+    <div id="section1">
+        <h1>Latest Coronavirus Stats</h1>
+        <input id="country_selector" type="text">
+        <div class="chart-container" style="height:40vh; width:80vw">
+            <canvas id="globalChart"></canvas>
+        </div>
+        <p id="stats-p" style="display: none;"><%= stats %></p>
+    </div>
 </div>
 
 <%- include ('./partials/footer') %>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="/js/countrySelect.min.js"></script>
+<script>
+    var localCountry = "<%= country %>";
+</script>
+<script src="/js/homepage.js"></script>
