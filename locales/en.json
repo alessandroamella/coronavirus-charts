@@ -1,8 +1,11 @@
 {
-    "TITLE": "COVID-19 Statistics",
+    "TITLE": "COVID-19 Coronavirus Stats with Charts",
+    "TITLE_HOMEPAGE": "COVID-19 Statistics",
     "HOME": "Home",
     "INFO": "Info",
     "LOADING": "Loading...",
+    "SELECTED_NATIONS": "Selected nations",
+    "NO_NATIONS": "No nation selected",
     "LATEST_STATS": "Latest Coronavirus Stats",
     "CONFIRMED": "Confirmed cases in",
     "RECOVERIES": "Recoveries in",

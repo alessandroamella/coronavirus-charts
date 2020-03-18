@@ -1,8 +1,11 @@
 {
-    "TITLE": "Statistiche sul COVID-19",
+    "TITLE": "COVID-19 Coronavirus Statistiche con Grafici",
+    "TITLE_HOMEPAGE": "Statistiche sul COVID-19",
     "HOME": "Homepage",
     "INFO": "Informazioni",
     "LOADING": "Caricamento...",
+    "SELECTED_NATIONS": "Nazioni selezionate",
+    "NO_NATIONS": "Nessuna nazione selezionata",
     "LATEST_STATS": "Ultimi Dati sul Coronavirus",
     "CONFIRMED": "Casi confermati in",
     "RECOVERIES": "Guarigioni in",

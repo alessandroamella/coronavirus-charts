@@ -109,7 +109,7 @@ app.get("/", function(req, res){
             if(json.country){
                 res.render("index", { stats: JSON.stringify(stats[json.country]), country: {name: json.country, code: json.countryCode.toLowerCase()} });
             } else {
-                res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "uk"} });
+                res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
             }
         });
     } catch(e){
@@ -140,18 +140,6 @@ app.get("/getData/:country", function(req, res){
         res.json(stats[country]);
     } else {
         res.status(400).send("Invalid country");
-    }
-});
-
-app.get("/provider", function(req, res){
-    try {
-        fetch(`http://ip-api.com/json/${req.clientIp}`)
-        .then(res => res.json())
-        .then(function(json){
-            res.json(json.as);
-        });
-    } catch(e){
-        res.send(e);
     }
 });
 

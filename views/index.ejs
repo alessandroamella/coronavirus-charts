@@ -3,13 +3,16 @@
 <link rel="stylesheet" href="/css/countrySelect.min.css">
 
 
-<div class="container-fluid justify-content-center" style="padding-right: 0;">
-    <div class="row row-eq-height mt-3 text-center">
+<div class="container-fluid justify-content-center">
+    <div class="row row-eq-height mt-3 text-center" style="max-width: 100%;">
         <div class="col-8 col-md-3 col-lg-2 mx-auto order-2 order-md-1">
             <div class="section" id="section1">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" onclick="countryCheckbox(this)" id="<%= country.code %>" checked>
-                    <label class="custom-control-label" for="<%= country.code %>"><%= country.name %></label>
+                <h5><%= text.SELECTED_NATIONS %>:</h5>
+                <div>
+                    <p class="delete-country" onclick="countryCheckbox(this)" id="<%= country.code %>">
+                        <img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;">
+                        <span class="country-name strike-link"><%= country.name %></span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -37,6 +40,7 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
 <script src="/js/countrySelect.min.js"></script>
+<!-- <script src="https://rawcdn.githack.com/eligrey/FileSaver.js/648ff96f8b2b69024c719e018ec20712771b8470/dist/FileSaver.min.js"></script> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js"></script> -->
 <script>
     var localCountry = { name: "<%= country.name %>", code: "<%= country.code %>" };

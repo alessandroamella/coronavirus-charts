@@ -1,16 +1,17 @@
-* {
+*:not(.country-list){
     max-width: 100%;
 }
 
 body {
     background-color: #36A2FB;
     font-family: 'Noto Sans', sans-serif;
+    word-wrap: break-word;
 }
 
 .section {
     background-color: white;
     border-radius: 1rem;
-    padding: 2rem;
+    padding: 1rem;
     box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.301);
 }
 
@@ -49,4 +50,82 @@ body {
     top: 50%;
     width: 3rem;
     height: 3rem;
+}
+
+.delete-country {
+    display: inline;
+    cursor: pointer;
+}
+
+/* .delete-country:hover {
+    display: inline;
+} */
+
+#footer {
+    display: inline-flex;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.back-link, .back-link:visited {
+    text-decoration: none;
+    position: relative;
+    color: #0e1111;
+}
+.back-link:after, .back-link:visited:after {
+    content: '';
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    background: #0e1111;
+    transition: 0.2s;
+}
+
+.back-link:hover:after, .back-link:visited:hover:after {
+    width: 100%;
+}
+
+.back-link:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.strike-link {
+    position: relative;
+    /* display: block; */
+    cursor: pointer;
+}
+
+.strike-link:before, .strike-link:after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 1px;
+    top: 50%;
+    margin-top: -0.5px;
+    background: black;
+}
+  
+.strike-link:before {
+    left: -2.5px;
+}
+
+.strike-link:after {
+    right: 2.5px;
+    background: black;
+    transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+  
+.strike-link:hover:before {
+    background: black;
+    width: 100%;
+    transition: width 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+  
+.strike-link:hover:after {
+    background: transparent;
+    width: 100%;
+    transition: 0s;
 }
