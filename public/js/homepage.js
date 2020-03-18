@@ -24,6 +24,7 @@ function getColor(){
 //   }
 
 $("#country_selector").on("change", function(){
+    $("#loading-container").show();
     updateCountry();
     $.ajax({
         url: "/getData/" + localCountry.name,
@@ -33,42 +34,38 @@ $("#country_selector").on("change", function(){
             } catch(e){
                 stats = xhr;
             }
-            // console.log(stats);
+            let alreadyThere = false;
+            globalChart.data.datasets.forEach(function(dataset, index){
+                if(dataset.label == `${text.CONFIRMED} ${localCountry.name}`){
+                    alert("Già presente!");
+                    alreadyThere = true;
+                    return false;
+                }
+            });
+            if(alreadyThere){ return false; }
             $("#section1").append(`<div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" onclick="countryCheckbox(this)" id="${localCountry.code}" checked><label class="custom-control-label"for="${localCountry.code}">${localCountry.name}</label></div>`);
-            // globalChart.data.datasets[0].label = `${text.CONFIRMED} ${localCountry.name}`;
-            // globalChart.data.labels.push(`${text.CONFIRMED} ${localCountry.name}`);
-            // globalChart.data.datasets[0].data = stats.map(stat => stat.confirmed);
             globalChart.data.datasets.push({
                 label: `${text.CONFIRMED} ${localCountry.name}`,
                 borderColor: getColor(),
-                pointHoverRadius: 10,
                 data: stats.map(stat => stat.confirmed)
             });
-
-            // globalChart.data.datasets[1].label = `${text.RECOVERIES} ${localCountry.name}`;
-            // globalChart.data.labels.push(`${text.RECOVERIES} ${localCountry.name}`);
-            // globalChart.data.datasets[1].data = stats.map(stat => stat.recovered);
-            // globalChart.data.datasets.push(stats.map(stat => stat.recovered));
             globalChart.data.datasets.push({
                 label: `${text.RECOVERIES} ${localCountry.name}`,
                 borderColor: getColor(),
                 data: stats.map(stat => stat.recovered)
             });
-
-            // globalChart.data.datasets[2].label = `${text.DEATHS} ${localCountry.name}`;
-            // globalChart.data.labels.push(`${text.DEATHS} ${localCountry.name}`);
-            // globalChart.data.datasets[2].data = stats.map(stat => stat.deaths);
-            // globalChart.data.datasets.push(stats.map(stat => stat.deaths));
             globalChart.data.datasets.push({
                 label: `${text.DEATHS} ${localCountry.name}`,
                 borderColor: getColor(),
                 data: stats.map(stat => stat.deaths)
             });
+            globalChart.resetZoom();
             globalChart.update();
         },
         error: function(xhr,status,error){
             alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
-        }
+        },
+        complete: function(){ $("#loading-container").hide(); }
     });
     // console.log(localCountry.name);
 });

@@ -143,6 +143,18 @@ app.get("/getData/:country", function(req, res){
     }
 });
 
+app.get("/provider", function(req, res){
+    try {
+        fetch(`http://ip-api.com/json/${req.clientIp}`)
+        .then(res => res.json())
+        .then(function(json){
+            res.json(json.as);
+        });
+    } catch(e){
+        res.send(e);
+    }
+});
+
 app.get("*", function(req, res){
     res.redirect("/");
 });
