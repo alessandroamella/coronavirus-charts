@@ -2,12 +2,14 @@ var globalChartElem = document.getElementById('globalChart').getContext('2d');
 
 function getPreferredCountries(){
     let preferredArr = ["cn", "it", "us"];
+    let flag = true;
     preferredArr.forEach(function(country){
         if(country == localCountry.code){
+            flag = false;
             return preferredArr;
         }
     });
-    preferredArr.push(localCountry.code);
+    if(flag) preferredArr.push(localCountry.code);
     return preferredArr;
 }
 
