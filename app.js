@@ -60,7 +60,7 @@ let Stat = mongoose.model("Stat", statSchema);
 
 let fetchData = schedule.scheduleJob("0 0 0 * * *", function(fireDate){
     try {
-        console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+        console.log('Data backup was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
         fetch('https://pomber.github.io/covid19/timeseries.json')
             .then(res => res.json())
             .then(function(json){

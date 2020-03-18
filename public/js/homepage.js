@@ -36,6 +36,13 @@ function getColor(){
 //                     "80%,1)"
 //   }
 
+function setBackground(chart, d1, d2, d3, c1, c2, c3){
+    d1.backgroundColor = c1;
+    d2.backgroundColor = c2;
+    d3.backgroundColor = c3;
+    chart.update();
+};
+
 $("#country_selector").on("change", function(){
     $("#loading-container").show();
     updateCountry();
@@ -48,9 +55,14 @@ $("#country_selector").on("change", function(){
                 stats = xhr;
             }
             let alreadyThere = false;
-            globalChart.data.datasets.forEach(function(dataset, index){
+            globalChart.data.datasets.forEach(function(dataset, i){
                 if(dataset.label == `${text.CONFIRMED} ${localCountry.name}`){
-                    alert("Già presente!");
+                    let datasets = globalChart.data.datasets;
+                    setTimeout(setBackground.bind(null, globalChart, datasets[i], datasets[i+1], datasets[i+2], datasets[i].backgroundColor, datasets[i+1].backgroundColor, datasets[i+2].backgroundColor), 1500);
+                    datasets[i].backgroundColor = datasets[i].borderColor;
+                    datasets[i+1].backgroundColor = datasets[i+1].borderColor;
+                    datasets[i+2].backgroundColor = datasets[i+2].borderColor;
+                    globalChart.update();
                     alreadyThere = true;
                     return false;
                 }
@@ -130,7 +142,7 @@ var globalChart = new Chart(globalChartElem, {
         },
         scales: {
             yAxes: [{
-                // type: "logarithmic",
+                type: "linear",
                 ticks: {
                     fontColor: "black"
                 }
@@ -162,7 +174,7 @@ var globalChart = new Chart(globalChartElem, {
                 zoom: {
                     enabled: true,
                     sensitivity: 1,
-                    mode: "xy"
+                    mode: "x"
                 }
             }
         }
@@ -201,8 +213,74 @@ function countryCheckbox(element){
 //     $("#section1").css("height", $("#section2").css("height"));
 // }
 
+$("#saveAsImage").click(function(){
+    // PNG TO JPEG!!!
+    // RISOLVI SFONDO!!
+    // let oldColor = $("#globalChart").css("background-color");
+    // $("#globalChart").css("background-color", "white");
+    var canvas = $("#globalChart").get(0);
+    var dataURL = canvas.toDataURL('image/png');
+    // console.log(dataURL);
+
+    $("#saveAsImage").attr("href", dataURL);
+    // $("#globalChart").css("background-color", oldColor);
+
+});
+
+// $("#saveAsImage").click(function(){
+//     let blob = document.getElementById("globalChart").toDataURL("image/png");
+//     saveAs(blob, "chart.png");
+// });
+
 function canvasToImage(canvas) {
 	var image = new Image();
-	image.src = canvas.toDataURL("image/png");
+    image.src = canvas.toDataURL("image/png");
 	return image;
 }
+
+$('input[type=radio][name=axisType]').change(function(){
+    globalChart.options.scales.yAxes[0].type = this.value;
+    globalChart.resetZoom();
+    globalChart.update();
+});
+
+$('input[type=radio][name=chartType]').change(function(){
+    if(this.value == "bar"){
+        globalChart.data.datasets.forEach(function(dataset){
+            dataset.backgroundColor = getColor();
+        });
+    } else {
+        globalChart.data.datasets.forEach(function(dataset){
+            dataset.backgroundColor = undefined;
+        });
+    }
+    globalChart.config.type = this.value;
+    globalChart.resetZoom();
+    globalChart.update();
+});
+
+setTimeout(function(){
+    $('.st-label').each(function(){
+        if($(this).text() == "Share" && text.SHARE != "Share"){
+            $(this).text(text.SHARE);
+        }
+    });
+}, 1000)
+
+$("#resetZoom").on("click", function(){
+    globalChart.resetZoom();
+});
+
+$('#chartBackground').change(function(){
+    if(this.checked){
+        globalChart.data.datasets.forEach(function(dataset){
+            dataset.backgroundColor = dataset.borderColor;
+        });
+        globalChart.update();
+    } else {
+        globalChart.data.datasets.forEach(function(dataset){
+            dataset.backgroundColor = undefined;
+        });
+        globalChart.update();
+    }      
+});

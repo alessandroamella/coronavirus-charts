@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/css/countrySelect.min.css">
 
 
-<div class="container-fluid justify-content-center">
+<div class="container-fluid">
     <div class="row row-eq-height mt-3 text-center" style="max-width: 100%;">
         <div class="col-8 col-md-3 col-lg-2 mx-auto order-2 order-md-1">
             <div class="section" id="section1">
@@ -18,18 +18,65 @@
         </div>
         <div class="col-12 col-md-9 col-lg-10 mb-3 mx-auto order-1 order-md-2">
             <div class="section" id="section2">
+
+                <!-- Header ultime statistiche -->
                 <h1> <%= text.LATEST_STATS %></h1>
+
+                <!-- Selezione nazione -->
                 <input id="country_selector" type="text" autocomplete="off">
+
+                <!-- Grafico -->
                 <div class="chart-container mx-auto">
                     <canvas id="globalChart"></canvas>
                 </div>
+
+                <!-- Caricamento -->
                 <div id="loading-container">
                     <div class="spinner-border" id="loading-spinner" role="status">
                         <span class="sr-only"><%= text.LOADING %></span>
                     </div>
                 </div>
+
+                <!-- Opzioni grafico -->
+                <div class="row align-items-center justify-content-center mb-2 mt-5 mx-2">
+                    <div class="text-left col">
+                        <p><%= text.AXIS_TYPE %>:</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="linearAxis" name="axisType" class="custom-control-input" value="linear" checked>
+                            <label class="custom-control-label" for="linearAxis"><%= text.LINEAR %></label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="logarithmicAxis" name="axisType" class="custom-control-input" value="logarithmic">
+                            <label class="custom-control-label" for="logarithmicAxis"><%= text.LOGARITHMIC %></label>
+                        </div>
+                    </div>
+                    <div class="text-left col">
+                        <p><%= text.GRAPH_TYPE %>:</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="lineChart" name="chartType" class="custom-control-input" value="line" checked>
+                            <label class="custom-control-label" for="lineChart"><%= text.LINE %></label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="barChart" name="chartType" class="custom-control-input" value="bar">
+                            <label class="custom-control-label" for="barChart"><%= text.BAR %></label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chartBackground">
+                            <label class="custom-control-label" for="chartBackground"><%= text.DATASET_BACKGROUND %></label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-light" id="resetZoom"><%= text.ZOOM_RESET %></button>
+                        <a href="#" role="button" class="btn btn-dark" id="saveAsImage" download="<%= text.FILE_NAME %>" target="_blank"><%= text.SAVE_AS_IMAGE %></a>
+                    </div>
+                </div>
+
+                <!-- Paragrafi invisibili da EJS a JavaScript -->
                 <p id="stats-p" style="display: none;"><%= stats %></p>
                 <p id="texts" style="display: none;"><%= JSON.stringify(text) %></p>
+
             </div>
         </div>
     </div>
@@ -40,7 +87,7 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
 <script src="/js/countrySelect.min.js"></script>
-<!-- <script src="https://rawcdn.githack.com/eligrey/FileSaver.js/648ff96f8b2b69024c719e018ec20712771b8470/dist/FileSaver.min.js"></script> -->
+<script src="https://rawcdn.githack.com/eligrey/FileSaver.js/648ff96f8b2b69024c719e018ec20712771b8470/dist/FileSaver.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js"></script> -->
 <script>
     var localCountry = { name: "<%= country.name %>", code: "<%= country.code %>" };

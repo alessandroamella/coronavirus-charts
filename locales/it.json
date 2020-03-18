@@ -1,6 +1,7 @@
 {
     "TITLE": "COVID-19 Coronavirus Statistiche con Grafici",
     "TITLE_HOMEPAGE": "Statistiche sul COVID-19",
+    "FILE_NAME": "Coronavirus Chart coronavirus.bitrey.it.png",
     "HOME": "Homepage",
     "INFO": "Informazioni",
     "LOADING": "Caricamento...",
@@ -10,6 +11,16 @@
     "CONFIRMED": "Casi confermati in",
     "RECOVERIES": "Guarigioni in",
     "DEATHS": "Morti in",
+    "AXIS_TYPE": "Tipo asse Y",
+    "GRAPH_TYPE": "Tipo grafico",
+    "LINE": "Linea",
+    "BAR": "Barra",
+    "LINEAR": "Lineare",
+    "LOGARITHMIC": "Logaritmico",
+    "DATASET_BACKGROUND": "Sfondo dati",
     "CANT_REQUEST": "impossibile richiedere",
+    "SHARE": "Condividi",
+    "ZOOM_RESET": "Resetta zoom",
+    "SAVE_AS_IMAGE": "Salva come immagine",
     "ERROR_LETMEKNOW": "Se credi che sia un errore, per favore contattami e fammelo sapere"
 }
