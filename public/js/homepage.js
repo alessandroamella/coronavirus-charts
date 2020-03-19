@@ -115,6 +115,21 @@ function updateCountry(){
     }
 }
 
+Chart.pluginService.register({
+    beforeDraw: function (chart, easing) {
+        if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+            var helpers = Chart.helpers;
+            var ctx = chart.chart.ctx;
+            var chartArea = chart.chartArea;
+
+            ctx.save();
+            ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+            ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+            ctx.restore();
+        }
+    }
+});
+
 var globalChart = new Chart(globalChartElem, {
     type: "line",
     data: {
@@ -134,6 +149,9 @@ var globalChart = new Chart(globalChartElem, {
         }]
     },
     options: {
+        chartArea: {
+            backgroundColor: '#fff'
+        },
         legend: {
             labels: {
                 fontColor: "black",
@@ -185,8 +203,6 @@ var globalChart = new Chart(globalChartElem, {
     },
 });
 
-console.log(globalChart.options);
-
 // $("#country_selector").focusin(function(){
 //     $(".country-list").removeClass("hide");
 // });
@@ -220,8 +236,17 @@ function countryCheckbox(element){
 // }
 
 $("#saveAsImage").click(function(){
+    // var canvas = document.getElementById("canvas"),
+    //     ctx = canvas.getContext("2d");
 
-    saveAs(document.getElementById("globalChart").toDataURL("image/png", 1.0), "canvas.png");
+    // ctx.fillStyle = "#ffffff";
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // canvas.toBlob(function(blob) {
+    //     saveAs(blob, "grafica.png");
+    // });
+    let image = document.getElementById("globalChart").toDataURL("image/jpeg", 1.0);
+    saveAs(globalChart.toBase64Image(), "canvas.jpeg");
 
     // let canvas = document.getElementById("globalChart");
     // var image = canvas.toDataURL("image/jpeg", 0.9);
