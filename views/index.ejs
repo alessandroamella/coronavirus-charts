@@ -1,13 +1,35 @@
 <%- include ('./partials/header') %>
 
 <link rel="stylesheet" href="/css/countrySelect.min.css">
-<link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
+
+<!-- Modal -->
+<div class="modal fade" id="colorModal" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="colorModalLabel"><%= text.CHART_BACKGROUND_COLOR %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mx-auto">
+                <div class="wheel" id="chartBackground"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="resetColorModal" class="btn btn-light"><%= text.RESET %></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= text.CANCEL %></button>
+                <button type="button" id="closeColorModal" class="btn btn-primary"><%= text.SAVE %></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="my-3 container-fluid">
     <div class="row justify-content-center text-center mx-auto">
         <div class="col-8 col-md-3 col-lg-2 mx-auto order-2 order-md-1">
             <div class="section" id="section1">
-                <h5><%= text.SELECTED_NATIONS %>:</h5>
+                <h5><%= text.SELECTED_COUNTRIES %>:</h5>
                 <div>
                     <p class="delete-country" onclick="countryCheckbox(this)" id="<%= country.code %>">
                         <img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;">
@@ -21,13 +43,16 @@
             <div class="section" id="section2">
 
                 <!-- Header ultime statistiche -->
-                <h1> <%= text.LATEST_STATS %></h1>
+                <h1 class="mb-b"><%= text.LATEST_STATS %></h1>
 
-                <!-- Selezione nazione -->
-                <input id="country_selector" type="text" autocomplete="off">
+                <div style="display: inline;">
+                    <!-- Selezione nazione -->
+                    <label for="country_selector" style="font-weight: 700;"><%= text.COUNTRY %>: </label>
+                    <input id="country_selector" type="text" autocomplete="off">
+                </div>
 
                 <!-- Grafico -->
-                <div class="chart-container mx-auto">
+                <div class="chart-container mx-auto mt-3">
                     <canvas id="globalChart"></canvas>
                 </div>
 
@@ -39,7 +64,8 @@
                 </div>
 
                 <!-- Opzioni grafico -->
-                <div class="row align-items-center justify-content-center mx-auto mb-2 mt-4 mx-2">
+                <h4 class="text-center mt-4">Opzioni grafico</h4>
+                <div class="row align-items-center justify-content-center mx-auto m-2">
                     <div class="text-left col">
                         <p class="mb-1"><%= text.AXIS_TYPE %>:</p>
                         <div class="custom-control custom-radio">
@@ -62,14 +88,26 @@
                             <label class="custom-control-label" for="barChart"><%= text.BAR %></label>
                         </div>
                     </div>
+                    <div class="text-left col">
+                        <p class="mb-1"><%= text.TEXT_STYLE %>:</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="textNormal" name="textStyle" class="custom-control-input" value="normal" checked>
+                            <label class="custom-control-label" for="textNormal"><%= text.NORMAL %></label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="textBold" name="textStyle" class="custom-control-input" value="bold">
+                            <label class="custom-control-label" for="textBold"><%= text.BOLD %></label>
+                        </div>
+                    </div>
                     <div class="col">
                         <div class="custom-control custom-checkbox pb-2">
                             <input type="checkbox" class="custom-control-input" id="datasetBackground">
                             <label class="custom-control-label" for="datasetBackground"><%= text.DATASET_BACKGROUND %></label>
                         </div>
-                        <div style="display: inline;" id="chartBackgroundDiv" class="pt-1">
+                        <div style="display: inline-block;" class="align-items-center" id="chartBackgroundDiv" class="pt-1">
                             <label for="chartBackground" style="line-height: 1.2;"><%= text.CHART_BACKGROUND_COLOR %>: </label>
-                            <input id="chartBackground" class="form-control" type="text" value="#FFFFFF" style="display: inline; max-width: 5rem; overflow: hidden;">
+                            <button type="button" class="colorBtn"></button>
+                            <!-- <input id="chartBackground" class="form-control" type="text" value="#FFFFFF" style="display: inline; max-width: 5rem; overflow: hidden;"> -->
                         </div>
                     </div>
                     <div class="col">
@@ -92,10 +130,11 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
 <script src="/js/countrySelect.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
+
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js"></script> -->
 <script>
     var localCountry = { name: "<%= country.name %>", code: "<%= country.code %>" };
 </script>
-<script src="/js/bootstrap-colorpicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
 <script src="/js/homepage.js"></script>

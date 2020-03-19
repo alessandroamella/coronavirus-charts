@@ -129,3 +129,13 @@ body {
 canvas {
     background-color: white;
 }
+
+.colorBtn {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    text-decoration: none;
+    background-color: white;
+    border-radius: 5px;
+}

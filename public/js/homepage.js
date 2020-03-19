@@ -43,6 +43,10 @@ function setBackground(chart, d1, d2, d3, c1, c2, c3){
     chart.update();
 };
 
+$("#country_selector").focus(function(){
+    $("#country_selector").val("");
+})
+
 $("#country_selector").on("change", function(){
     $("#country_selector").blur();
     $("#loading-container").show();
@@ -97,8 +101,8 @@ $("#country_selector").on("change", function(){
     // console.log(localCountry.name);
 });
 
-$("#country_selector").on("keypress",function(e) {
-    if(e.which == 13) {
+$("#country_selector").on("keypress",function(e){
+    if(e.which == 13){
         $(this).blur();
     }
 });
@@ -117,8 +121,8 @@ function updateCountry(){
 }
 
 Chart.pluginService.register({
-    beforeDraw: function (chart, easing) {
-        if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+    beforeDraw: function(chart, easing){
+        if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor){
             var helpers = Chart.helpers;
             var ctx = chart.chart.ctx;
             var chartArea = chart.chartArea;
@@ -164,11 +168,23 @@ var globalChart = new Chart(globalChartElem, {
                 type: "linear",
                 ticks: {
                     fontColor: "black"
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: text.PEOPLE,
+                    fontColor: "black",
+                    fontSize: 14
                 }
             }],
             xAxes: [{
                 ticks: {
                     fontColor: "black"
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: text.DATE,
+                    fontColor: "black",
+                    fontSize: 14
                 }
             }]
         },
@@ -217,8 +233,8 @@ function countryCheckbox(element){
         if(dataset.label == `${text.CONFIRMED} ${ $("#" + element.id).children(".country-name").text() }`){
             globalChart.data.datasets.splice(index, 3);
             $("#" + element.id).remove();
-            if(($("#section1").text().trim() == text.SELECTED_NATIONS + ":")){
-                $("#section1").append(`<p class="no-nations text-muted" style="font-size: 0.8rem">${text.NO_NATIONS}</p>`);
+            if(($("#section1").text().trim() == text.SELECTED_COUNTRIES + ":")){
+                $("#section1").append(`<p class="no-nations text-muted" style="font-size: 0.8rem">${text.NO_COUNTRIES}</p>`);
             }
             globalChart.update();
             return false;
@@ -230,7 +246,7 @@ function countryCheckbox(element){
 //     sizes: [25, 75],
 //     direction: 'horizontal',
 //     minSize: 300
-// })
+// });
 
 // if($( window ).width() >= 768){
 //     $("#section1").css("height", $("#section2").css("height"));
@@ -243,11 +259,10 @@ $("#saveAsImage").click(function(){
     // ctx.fillStyle = "#ffffff";
     // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // canvas.toBlob(function(blob) {
+    // canvas.toBlob(function(blob){
     //     saveAs(blob, "grafica.png");
     // });
-    let image = document.getElementById("globalChart").toDataURL("image/jpeg", 1.0);
-    saveAs(globalChart.toBase64Image(), "canvas.jpeg");
+    saveAs(globalChart.toBase64Image(), text.FILE_NAME + ".png");
 
     // let canvas = document.getElementById("globalChart");
     // var image = canvas.toDataURL("image/jpeg", 0.9);
@@ -270,7 +285,7 @@ $("#saveAsImage").click(function(){
 //     saveAs(blob, "chart.png");
 // });
 
-function canvasToImage(canvas) {
+function canvasToImage(canvas){
 	var image = new Image();
     image.src = canvas.toDataURL("image/png");
 	return image;
@@ -297,17 +312,25 @@ $('input[type=radio][name=chartType]').change(function(){
     globalChart.update();
 });
 
+$('input[type=radio][name=textStyle]').change(function(){
+    globalChart.options.legend.labels.fontStyle = this.value;
+    globalChart.options.scales.yAxes[0].ticks.fontStyle = this.value;
+    globalChart.options.scales.xAxes[0].ticks.fontStyle = this.value;
+    globalChart.update();
+});
+
 setTimeout(function(){
     $('.st-label').each(function(){
         if($(this).text() == "Share" && text.SHARE != "Share"){
             $(this).text(text.SHARE);
         }
     });
-}, 1000)
+}, 1000);
 
 $("#resetZoom").on("click", function(){
     globalChart.resetZoom();
 });
+
 
 $('#datasetBackground').change(function(){
     if(this.checked){
@@ -327,10 +350,38 @@ $('#globalChart').bind('contextmenu', function(e){
     return false;
 }); 
 
-$(function(){
-    $('#chartBackground').colorpicker();
-    $('#chartBackground').on('colorpickerChange', function(event){
-        globalChart.options.chartArea.backgroundColor = event.color.toString();
-        globalChart.update();
-    });
+// $(function(){
+//     $('#chartBackground').colorpicker();
+//     $('#chartBackground').on('colorpickerChange', function(event){
+//         globalChart.options.chartArea.backgroundColor = event.color.toString();
+//         globalChart.update();
+//     });
+// });
+
+let colorWheel = new iro.ColorPicker("#chartBackground", {color: '#fff'});
+let tempColor;
+
+$(".colorBtn").on("click", function(){
+    $('#colorModal').modal('show');
+    tempColor = colorWheel.color.hexString;
 });
+
+$("#closeColorModal").on("click", function(){
+    console.log(colorWheel.color);
+    $('#colorModal').modal('hide');
+    $(".colorBtn").css("background-color", colorWheel.color.rgbaString);
+    globalChart.options.chartArea.backgroundColor = colorWheel.color.rgbaString;
+    globalChart.update();
+});
+
+$("#resetColorModal").on("click", function(){
+    colorWheel.color.hexString = "#ffffff";
+});
+
+$('#colorModal').on('hidden.bs.modal', function(){
+    colorWheel.color.hexString = tempColor;
+});
+
+$(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+})

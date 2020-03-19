@@ -58,9 +58,10 @@ let statSchema = new mongoose.Schema({
 })
 let Stat = mongoose.model("Stat", statSchema);
 
-let fetchData = schedule.scheduleJob("0 0 0 * * *", function(fireDate){
+let global = {};
+
+async function fetchData(){
     try {
-        console.log('Data backup was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
         fetch('https://pomber.github.io/covid19/timeseries.json')
             .then(res => res.json())
             .then(function(json){
@@ -70,20 +71,55 @@ let fetchData = schedule.scheduleJob("0 0 0 * * *", function(fireDate){
                 stats = json;
                 let countriesData = [];
                 for(data in json){
+                    json[data].forEach(function(dayData){
+                        if(global[dayData.date]){
+                            global[dayData.date].confirmed += dayData.confirmed;
+                            global[dayData.date].deaths += dayData.deaths;
+                            global[dayData.date].recovered += dayData.recovered;
+                        } else {
+                            global[dayData.date] = {
+                                confirmed: dayData.confirmed,
+                                deaths: dayData.deaths,
+                                recovered: dayData.recovered
+                            }
+                        }
+                    });
                     countriesData.push({
                         country: data,
                         data: json[data]
                     });
                 }
+                stats["Global"] = Object.keys(global).map(function(k){
+                    return {
+                        date: k,
+                        confirmed: global[k].confirmed,
+                        deaths: global[k].deaths,
+                        recovered: global[k].recovered
+                    }
+                });
+                console.log("Fetched new data!");
+                countriesData.push({
+                    country: "Global",
+                    data: global
+                });
                 let fetchedStats = new Stat({
                     countries: countriesData
                 });
-                fetchedStats.save(function(err){if(err){console.log(err);}});
-            // }});
-        });
-    } catch(e){
+                fetchedStats.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    });
+                // }});
+            });
+    } catch (e) {
         throw new Error(e);
     }
+}
+
+let fetchDataSchedule = schedule.scheduleJob("0 0 0 * * *", function(fireDate){
+    fetchData();
+    console.log('Data save was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
 });
 
 try {
@@ -101,15 +137,32 @@ const server = app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Server started!");
 });
 
-app.get("/", function(req, res){
+function renderHomepage(res, json){
+    if(json.country){
+        res.render("index", { stats: JSON.stringify(stats[json.country]), country: {name: json.country, code: json.countryCode.toLowerCase()} });
+    } else {
+        res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
+    }
+}
+
+app.get("/", async function(req, res){
     try {
         fetch(`http://ip-api.com/json/${req.clientIp}`)
         .then(res => res.json())
-        .then(function(json){
-            if(json.country){
-                res.render("index", { stats: JSON.stringify(stats[json.country]), country: {name: json.country, code: json.countryCode.toLowerCase()} });
+        .then(async function(json){
+            if(stats){
+                renderHomepage(res, json);
             } else {
-                res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
+                await fetchData();
+                if(stats){
+                    try {
+                        renderHomepage(res, json);
+                    } catch(e){
+                        res.send("Error while loading the homepage. Sorry for the inconvenience!");
+                    }
+                } else {
+                    res.send("Error while loading the stats. Sorry for the inconvenience!");
+                }
             }
         });
     } catch(e){
@@ -117,7 +170,7 @@ app.get("/", function(req, res){
     }
 });
 
-app.get("/getData/:country", function(req, res){
+app.get("/getData/:country", async function(req, res){
     let country = req.params.country;
     if(country == "South Korea"){
         country = "Korea, South";
@@ -135,6 +188,10 @@ app.get("/getData/:country", function(req, res){
         country = "Cote d'Ivoire";
     } else if(country == "Czech Republic"){
         country = "Czechia";
+    } else if(country == "Global"){
+        if(!stats["Global"]){
+            await fetchData();
+        }
     }
     if(stats[country]){
         res.json(stats[country]);
@@ -146,3 +203,6 @@ app.get("/getData/:country", function(req, res){
 app.get("*", function(req, res){
     res.redirect("/");
 });
+
+
+fetchData();
