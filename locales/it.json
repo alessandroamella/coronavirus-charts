@@ -18,6 +18,7 @@
     "LINEAR": "Lineare",
     "LOGARITHMIC": "Logaritmico",
     "DATASET_BACKGROUND": "Sfondo dati",
+    "CHART_BACKGROUND_COLOR": "Sfondo grafico",
     "CANT_REQUEST": "impossibile richiedere",
     "SHARE": "Condividi",
     "ZOOM_RESET": "Resetta zoom",

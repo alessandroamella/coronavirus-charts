@@ -18,6 +18,7 @@
     "LINEAR": "Linear",
     "LOGARITHMIC": "Logarithmic",
     "DATASET_BACKGROUND": "Dataset background",
+    "CHART_BACKGROUND_COLOR": "Chart background",
     "CANT_REQUEST": "can't request",
     "SHARE": "Share",
     "ZOOM_RESET": "Reset zoom",

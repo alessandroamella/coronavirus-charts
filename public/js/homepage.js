@@ -69,7 +69,7 @@ $("#country_selector").on("change", function(){
             });
             if(alreadyThere){ return false; }
             $(".no-nations").remove();
-            $("#section1").append(`<div><p class="delete-country" onclick="countryCheckbox(this)" id="${localCountry.code}"><img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;"> <span class="country-name back-link">${localCountry.name}</span></p></div>`);
+            $("#section1").append(`<div><p class="delete-country" onclick="countryCheckbox(this)" id="${localCountry.code}"><img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;"> <img src="/img/flags/${localCountry.code}.png" alt="Flag" style="max-width: 1rem;"> <span class="country-name strike-link">${localCountry.name}</span></p></div>`);
             globalChart.data.datasets.push({
                 label: `${text.CONFIRMED} ${localCountry.name}`,
                 borderColor: getColor(),
@@ -308,7 +308,7 @@ $("#resetZoom").on("click", function(){
     globalChart.resetZoom();
 });
 
-$('#chartBackground').change(function(){
+$('#datasetBackground').change(function(){
     if(this.checked){
         globalChart.data.datasets.forEach(function(dataset){
             dataset.backgroundColor = dataset.borderColor;
@@ -325,3 +325,11 @@ $('#chartBackground').change(function(){
 $('#globalChart').bind('contextmenu', function(e){
     return false;
 }); 
+
+$(function(){
+    $('#chartBackground').colorpicker();
+    $('#chartBackground').on('colorpickerChange', function(event){
+        globalChart.options.chartArea.backgroundColor = event.color.toString();
+        globalChart.update();
+    });
+});

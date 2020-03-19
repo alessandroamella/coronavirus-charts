@@ -1,7 +1,3 @@
-*:not(.country-list){
-    max-width: 100%;
-}
-
 body {
     background-color: #36A2FB;
     font-family: 'Noto Sans', sans-serif;
