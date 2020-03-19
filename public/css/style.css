@@ -125,3 +125,7 @@ body {
     width: 100%;
     transition: 0s;
 }
+
+canvas {
+    background-color: white;
+}
