@@ -44,6 +44,7 @@ function setBackground(chart, d1, d2, d3, c1, c2, c3){
 };
 
 $("#country_selector").on("change", function(){
+    $("#country_selector").blur();
     $("#loading-container").show();
     updateCountry();
     $.ajax({
