@@ -157,7 +157,10 @@ var globalChart = new Chart(globalChartElem, {
             point: {
                 radius: 4,
                 hoverRadius: 7,
-                hitRadius: 10
+                hitRadius: 10,
+            },
+            line: {
+                borderWidth: 4
             }
         },
         responsive: true,
@@ -174,12 +177,15 @@ var globalChart = new Chart(globalChartElem, {
                 zoom: {
                     enabled: true,
                     sensitivity: 1,
-                    mode: "x"
+                    mode: "x",
+                    sensitivity: 0.1
                 }
             }
         }
     },
 });
+
+console.log(globalChart.options);
 
 // $("#country_selector").focusin(function(){
 //     $(".country-list").removeClass("hide");
@@ -214,15 +220,21 @@ function countryCheckbox(element){
 // }
 
 $("#saveAsImage").click(function(){
+
+    saveAs(document.getElementById("globalChart").toDataURL("image/png", 1.0), "canvas.png");
+
+    // let canvas = document.getElementById("globalChart");
+    // var image = canvas.toDataURL("image/jpeg", 0.9);
+    // $("#saveAsImage").attr("href", image);
     // PNG TO JPEG!!!
     // RISOLVI SFONDO!!
     // let oldColor = $("#globalChart").css("background-color");
     // $("#globalChart").css("background-color", "white");
-    var canvas = $("#globalChart").get(0);
-    var dataURL = canvas.toDataURL('image/png');
+    // var canvas = $("#globalChart").get(0);
+    // var dataURL = canvas.toDataURL('image/png');
     // console.log(dataURL);
 
-    $("#saveAsImage").attr("href", dataURL);
+    // $("#saveAsImage").attr("href", dataURL);
     // $("#globalChart").css("background-color", oldColor);
 
 });
@@ -284,3 +296,7 @@ $('#chartBackground').change(function(){
         globalChart.update();
     }      
 });
+
+$('#globalChart').bind('contextmenu', function(e){
+    return false;
+}); 
