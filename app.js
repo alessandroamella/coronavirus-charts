@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
-const i18n = require("i18n-express");
 const fetch = require('node-fetch');
 const fs = require('fs');
 const schedule = require('node-schedule');
@@ -38,16 +37,6 @@ mongoose.connect(process.env.MONGODB_URI, function(){
 });
 
 app.use(requestIp.mw());
-
-app.use(
-    i18n({
-        translationsPath: __dirname + '/locales',
-        cookieLangName: "lang",
-        paramLangName: "lang",
-        siteLangs: ["en","it"],
-        textsVarName: 'text'
-    })
-);
 
 // METHOD OVERRIDE SETUP
 app.use(methodOverride("_method"));

@@ -63,55 +63,57 @@
                 </div>
 
                 <!-- Opzioni grafico -->
-                <h4 class="text-center mt-4">Opzioni grafico</h4>
-                <div class="row align-items-center justify-content-center mx-auto m-2">
-                    <div class="text-left col">
-                        <p class="mb-1"><%= text.AXIS_TYPE %>:</p>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="linearAxis" name="axisType" class="custom-control-input" value="linear" checked>
-                            <label class="custom-control-label" for="linearAxis"><%= text.LINEAR %></label>
+                <div id="chartOptions" style="display: none;">
+                    <h4 class="text-center mt-4"><%= text.CHART_OPTIONS %></h4>
+                    <div class="row align-items-center justify-content-center mx-auto m-2">
+                        <div class="text-left col">
+                            <p class="mb-1"><%= text.AXIS_TYPE %>:</p>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="linearAxis" name="axisType" class="custom-control-input" value="linear" checked>
+                                <label class="custom-control-label" for="linearAxis"><%= text.LINEAR %></label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="logarithmicAxis" name="axisType" class="custom-control-input" value="logarithmic">
+                                <label class="custom-control-label" for="logarithmicAxis"><%= text.LOGARITHMIC %></label>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="logarithmicAxis" name="axisType" class="custom-control-input" value="logarithmic">
-                            <label class="custom-control-label" for="logarithmicAxis"><%= text.LOGARITHMIC %></label>
+                        <div class="text-left col">
+                            <p class="mb-1"><%= text.GRAPH_TYPE %>:</p>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="lineChart" name="chartType" class="custom-control-input" value="line" checked>
+                                <label class="custom-control-label" for="lineChart"><%= text.LINE %></label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="barChart" name="chartType" class="custom-control-input" value="bar">
+                                <label class="custom-control-label" for="barChart"><%= text.BAR %></label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-left col">
-                        <p class="mb-1"><%= text.GRAPH_TYPE %>:</p>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="lineChart" name="chartType" class="custom-control-input" value="line" checked>
-                            <label class="custom-control-label" for="lineChart"><%= text.LINE %></label>
+                        <div class="text-left col">
+                            <p class="mb-1"><%= text.TEXT_STYLE %>:</p>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="textNormal" name="textStyle" class="custom-control-input" value="normal" checked>
+                                <label class="custom-control-label" for="textNormal"><%= text.NORMAL %></label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="textBold" name="textStyle" class="custom-control-input" value="bold">
+                                <label class="custom-control-label" for="textBold"><%= text.BOLD %></label>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="barChart" name="chartType" class="custom-control-input" value="bar">
-                            <label class="custom-control-label" for="barChart"><%= text.BAR %></label>
+                        <div class="col">
+                            <div class="custom-control custom-checkbox pb-2">
+                                <input type="checkbox" class="custom-control-input" id="datasetBackground">
+                                <label class="custom-control-label" for="datasetBackground"><%= text.DATASET_BACKGROUND %></label>
+                            </div>
+                            <div style="display: inline-block;" class="align-items-center" id="chartBackgroundDiv" class="pt-1">
+                                <label for="chartBackground" style="line-height: 1.2;"><%= text.CHART_BACKGROUND_COLOR %>: </label>
+                                <button type="button" class="colorBtn"></button>
+                                <!-- <input id="chartBackground" class="form-control" type="text" value="#FFFFFF" style="display: inline; max-width: 5rem; overflow: hidden;"> -->
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-left col">
-                        <p class="mb-1"><%= text.TEXT_STYLE %>:</p>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="textNormal" name="textStyle" class="custom-control-input" value="normal" checked>
-                            <label class="custom-control-label" for="textNormal"><%= text.NORMAL %></label>
+                        <div class="col">
+                            <button type="button" class="btn btn-light mb-2" id="resetZoom"><%= text.ZOOM_RESET %></button>
+                            <a href="#" role="button" class="btn btn-dark" id="saveAsImage"><%= text.SAVE_AS_IMAGE %></a>
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="textBold" name="textStyle" class="custom-control-input" value="bold">
-                            <label class="custom-control-label" for="textBold"><%= text.BOLD %></label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="custom-control custom-checkbox pb-2">
-                            <input type="checkbox" class="custom-control-input" id="datasetBackground">
-                            <label class="custom-control-label" for="datasetBackground"><%= text.DATASET_BACKGROUND %></label>
-                        </div>
-                        <div style="display: inline-block;" class="align-items-center" id="chartBackgroundDiv" class="pt-1">
-                            <label for="chartBackground" style="line-height: 1.2;"><%= text.CHART_BACKGROUND_COLOR %>: </label>
-                            <button type="button" class="colorBtn"></button>
-                            <!-- <input id="chartBackground" class="form-control" type="text" value="#FFFFFF" style="display: inline; max-width: 5rem; overflow: hidden;"> -->
-                        </div>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-light mb-2" id="resetZoom"><%= text.ZOOM_RESET %></button>
-                        <a href="#" role="button" class="btn btn-dark" id="saveAsImage"><%= text.SAVE_AS_IMAGE %></a>
                     </div>
                 </div>
 
@@ -130,4 +132,4 @@
 <script src="/js/countrySelect.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
 <script src="https://rawcdn.githack.com/AlbinoDrought/chartjs-plugin-watermark/760b315264dadad6912a9c71ba4b1ffd8779bc22/chartjs-plugin-watermark.min.js"></script>
-<script src="/js/homepage.js"></script>
+<script src="/js/homepage.min.js"></script>
