@@ -105,12 +105,11 @@ async function fetchData(){
                 let fetchedStats = new Stat({
                     countries: countriesData
                 });
-                fetchedStats.save(function (err) {
-                    if (err) {
+                fetchedStats.save(function(err){
+                    if(err){
                         console.log(err);
                     }
-                    });
-                // }});
+                });
             });
     } catch (e) {
         throw new Error(e);
@@ -137,37 +136,63 @@ const server = app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Server started!");
 });
 
-function renderHomepage(res, json){
-    if(json.country){
-        res.render("index", { stats: JSON.stringify(stats[json.country]), country: {name: json.country, code: json.countryCode.toLowerCase()} });
-    } else {
-        res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
-    }
-}
-
-app.get("/", async function(req, res){
+function getIp(req, res, callback){
     try {
         fetch(`http://ip-api.com/json/${req.clientIp}`)
         .then(res => res.json())
         .then(async function(json){
             if(stats){
-                renderHomepage(res, json);
+                callback(res, json);
+                return true;
             } else {
                 await fetchData();
                 if(stats){
-                    try {
-                        renderHomepage(res, json);
-                    } catch(e){
-                        res.send("Error while loading the homepage. Sorry for the inconvenience!");
-                    }
+                    callback(res, json);
+                    return true;
                 } else {
-                    res.send("Error while loading the stats. Sorry for the inconvenience!");
+                    callback(res, false);
+                    return false;
                 }
             }
         });
     } catch(e){
         res.send(e);
     }
+}
+
+app.get("/", function(req, res){
+    // getIp(req, res, function(res, json){
+    //     if(!json){
+    //         res.send("Error while loading the homepage. Sorry for the inconvenience!");
+    //         return false;
+    //     }
+    //     if(json.country){
+            res.render("index");
+    //     } else {
+    //         res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
+    //     }
+    // });
+});
+
+app.get("/getLocalCountry", function(req, res){
+    getIp(req, res, function(res, json){
+        if(!json){
+            res.status(500).send("Error while requesting the local country. Sorry for the inconvenience!");
+            return false;
+        }
+        if(json.country){
+            res.json({
+                name: json.country,
+                code: json.countryCode.toLowerCase()
+            });
+        } else {
+            res.json({
+                name: "China",
+                code: "cn"
+            });
+        }
+        
+    });
 });
 
 app.get("/getData/:country", async function(req, res){
