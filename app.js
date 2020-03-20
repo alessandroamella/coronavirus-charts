@@ -167,6 +167,7 @@ function getIp(req, res, callback){
 }
 
 app.get("/", function(req, res){
+    // Language
     if(req.query.lang == "it" || req.query.lang == "en"){
         res.cookie("lang", req.query.lang);
         res.render("index", { text: lang[req.query.lang] });
@@ -218,6 +219,7 @@ app.get("/getLocalCountry", function(req, res){
 
 app.get("/getData/:country", async function(req, res){
     let country = req.params.country;
+    let cookieCountry = country;
     if(country == "South Korea"){
         country = "Korea, South";
     } else if(country == "United States"){
@@ -238,16 +240,17 @@ app.get("/getData/:country", async function(req, res){
         if(!stats || !stats[country]){
             fetchData(function(){
                 console.log("Fetched new data because not available!");
-                sendCountry(res, country);
+                sendCountry(res, country, cookieCountry);
             });
             return false;
         }
     }
-    sendCountry(res, country);
+    sendCountry(res, country, cookieCountry);
 });
 
-function sendCountry(res, country){
+function sendCountry(res, country, cookieCountry){
     if(stats[country]){
+        res.cookie("lastCountry", cookieCountry);
         res.json(stats[country]);
     } else {
         res.status(400).send("Invalid country");

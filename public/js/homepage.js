@@ -479,19 +479,35 @@ colorWheel.on('color:change', function(color, changes){
     $(".colorBtn").css("background-color", color.hexString);
 });
 
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
 $(document).ready(function(){
-    $.ajax({
-        url: "/getLocalCountry",
-        success: function(xhr, status){
-            try {
-                localCountry = JSON.parse(xhr.responseText);
-            } catch(e){
-                localCountry = xhr;
-            }
-            $("#country_selector").countrySelect("setCountry", localCountry.name);
-        },
-        error: function(xhr,status,error){
-            alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
+    let lastCountry = getCookie("lastCountry");
+    if(lastCountry){
+        lastCountry = decodeURIComponent(lastCountry)
+        $("#country_selector").countrySelect("setCountry", lastCountry);
+        localCountry = {
+            name: $("#country_selector").countrySelect("getSelectedCountryData").name.replace(/ *\([^)]*\) */g, ""),
+            code: $("#country_selector").countrySelect("getSelectedCountryData").iso2
         }
-    });
+    } else {
+        $.ajax({
+            url: "/getLocalCountry",
+            success: function(xhr, status){
+                try {
+                    localCountry = JSON.parse(xhr.responseText);
+                } catch(e){
+                    localCountry = xhr;
+                }
+                $("#country_selector").countrySelect("setCountry", localCountry.name);
+            },
+            error: function(xhr,status,error){
+                alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
+            }
+        });
+    }
 });
