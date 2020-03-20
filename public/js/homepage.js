@@ -1,4 +1,6 @@
-var globalChartElem = document.getElementById('globalChart').getContext('2d');
+let localCountry = { name: "China", code: "cn" }
+
+let globalChartElem = document.getElementById('globalChart').getContext('2d');
 
 function getPreferredCountries(){
     let preferredArr = ["cn", "it", "us"];
@@ -18,8 +20,7 @@ $("#country_selector").countrySelect({
     excludeCountries: ["AS", "AO", "AI", "AX", "BB", "BZ", "BJ", "BM", "BQ", "BW", "IO", "IM", "VG", "CG", "BN", "MM", "BI", "CC", "CV", "ID", "KM", "CK", "GS", "CW", "CX", "DJ", "DM", "SV", "ER", "FK", "FO", "FM", "FJ", "GF", "PF", "GI", "GL", "GD", "GU", "GW", "HT", "HK", "KI", "KY", "KG", "LA", "LS", "LR", "LY", "MO", "MG", "MW", "ML", "MH", "MU", "YT", "ME", "MS", "MZ", "NR", "AN", "NC", "NI", "NE", "NU", "NF", "KP", "MP", "PW", "PG", "PR", "RE", "BL", "SH", "KN", "MF", "PM", "WS", "ST", "SL", "SX", "SB", "SO", "SS", "SY", "TW", "TJ", "TZ", "BS", "GM", "TL", "TK", "TO", "TM", "TC", "TD", "TV", "UG", "UM", "VI", "VU", "VA", "WF", "EH", "YE", "ZM", "ZW"]
 });
 
-let stats = JSON.parse($("#stats-p").text());
-$("#stats-p").remove();
+let stats;
 // console.log(stats);
 let text = JSON.parse($("#texts").text());
 $("#texts").remove();
@@ -45,12 +46,45 @@ function setBackground(chart, d1, d2, d3, c1, c2, c3){
 
 $("#country_selector").focus(function(){
     $("#country_selector").val("");
-})
+});
 
-$("#country_selector").on("change", function(){
-    $("#country_selector").blur();
-    $("#loading-container").show();
-    updateCountry();
+function updateChart(){
+    let alreadyThere = false;
+    globalChart.data.datasets.forEach(function(dataset, i){
+        if(dataset.label == `${text.CONFIRMED} ${localCountry.name}`){
+            let datasets = globalChart.data.datasets;
+            setTimeout(setBackground.bind(null, globalChart, datasets[i], datasets[i+1], datasets[i+2], datasets[i].backgroundColor, datasets[i+1].backgroundColor, datasets[i+2].backgroundColor), 1500);
+            datasets[i].backgroundColor = datasets[i].borderColor;
+            datasets[i+1].backgroundColor = datasets[i+1].borderColor;
+            datasets[i+2].backgroundColor = datasets[i+2].borderColor;
+            globalChart.update();
+            alreadyThere = true;
+            return false;
+        }
+    });
+    if(alreadyThere){ return false; }
+    $(".no-nations").remove();
+    $("#section1").append(`<div><p class="delete-country" onclick="countryCheckbox(this)" id="${localCountry.code}"><img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;"> <img src="/img/flags/${localCountry.code}.png" alt="Flag" style="max-width: 1rem;"> <span class="country-name strike-link">${localCountry.name}</span></p></div>`);
+    globalChart.data.datasets.push({
+        label: `${text.CONFIRMED} ${localCountry.name}`,
+        borderColor: getColor(),
+        data: stats.map(stat => stat.confirmed)
+    });
+    globalChart.data.datasets.push({
+        label: `${text.RECOVERIES} ${localCountry.name}`,
+        borderColor: getColor(),
+        data: stats.map(stat => stat.recovered)
+    });
+    globalChart.data.datasets.push({
+        label: `${text.DEATHS} ${localCountry.name}`,
+        borderColor: getColor(),
+        data: stats.map(stat => stat.deaths)
+    });
+    globalChart.resetZoom();
+    globalChart.update();
+};
+
+function getCountry(callback){
     $.ajax({
         url: "/getData/" + localCountry.name,
         success: function(xhr, status){
@@ -59,46 +93,24 @@ $("#country_selector").on("change", function(){
             } catch(e){
                 stats = xhr;
             }
-            let alreadyThere = false;
-            globalChart.data.datasets.forEach(function(dataset, i){
-                if(dataset.label == `${text.CONFIRMED} ${localCountry.name}`){
-                    let datasets = globalChart.data.datasets;
-                    setTimeout(setBackground.bind(null, globalChart, datasets[i], datasets[i+1], datasets[i+2], datasets[i].backgroundColor, datasets[i+1].backgroundColor, datasets[i+2].backgroundColor), 1500);
-                    datasets[i].backgroundColor = datasets[i].borderColor;
-                    datasets[i+1].backgroundColor = datasets[i+1].borderColor;
-                    datasets[i+2].backgroundColor = datasets[i+2].borderColor;
-                    globalChart.update();
-                    alreadyThere = true;
-                    return false;
-                }
-            });
-            if(alreadyThere){ return false; }
-            $(".no-nations").remove();
-            $("#section1").append(`<div><p class="delete-country" onclick="countryCheckbox(this)" id="${localCountry.code}"><img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;"> <img src="/img/flags/${localCountry.code}.png" alt="Flag" style="max-width: 1rem;"> <span class="country-name strike-link">${localCountry.name}</span></p></div>`);
-            globalChart.data.datasets.push({
-                label: `${text.CONFIRMED} ${localCountry.name}`,
-                borderColor: getColor(),
-                data: stats.map(stat => stat.confirmed)
-            });
-            globalChart.data.datasets.push({
-                label: `${text.RECOVERIES} ${localCountry.name}`,
-                borderColor: getColor(),
-                data: stats.map(stat => stat.recovered)
-            });
-            globalChart.data.datasets.push({
-                label: `${text.DEATHS} ${localCountry.name}`,
-                borderColor: getColor(),
-                data: stats.map(stat => stat.deaths)
-            });
-            globalChart.resetZoom();
-            globalChart.update();
         },
         error: function(xhr,status,error){
             alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
         },
-        complete: function(){ $("#loading-container").hide(); }
+        complete: function(){
+            $("#loading-container").hide();
+            if(callback){
+                callback();
+            }
+        }
     });
-    // console.log(localCountry.name);
+}
+
+$("#country_selector").on("change", function(){
+    $("#country_selector").blur();
+    $("#loading-container").show();
+    updateCountry();
+    getCountry(updateChart);
 });
 
 $("#country_selector").on("keypress",function(e){
@@ -122,7 +134,7 @@ function updateCountry(){
 
 Chart.pluginService.register({
     beforeDraw: function(chart, easing){
-        if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor){
+        if(chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor){
             var helpers = Chart.helpers;
             var ctx = chart.chart.ctx;
             var chartArea = chart.chartArea;
@@ -135,90 +147,96 @@ Chart.pluginService.register({
     }
 });
 
-var globalChart = new Chart(globalChartElem, {
-    type: "line",
-    data: {
-        labels: stats.map(stat => `${(new Date(stat.date)).getDate()}/${(new Date(stat.date)).getMonth() + 1}`),
-        datasets: [{
-            label: `${text.CONFIRMED} ${localCountry.name}`,
-            borderColor: getColor(),
-            data: stats.map(stat => stat.confirmed)
-        }, {
-            label: `${text.RECOVERIES} ${localCountry.name}`,
-            borderColor: getColor(),
-            data: stats.map(stat => stat.recovered)
-        }, {
-            label: `${text.DEATHS} ${localCountry.name}`,
-            borderColor: getColor(),
-            data: stats.map(stat => stat.deaths)
-        }]
-    },
-    options: {
-        chartArea: {
-            backgroundColor: '#fff'
-        },
-        legend: {
-            labels: {
-                fontColor: "black",
-                fontSize: 14
-            }
-        },
-        scales: {
-            yAxes: [{
-                type: "linear",
-                ticks: {
-                    fontColor: "black"
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: text.PEOPLE,
-                    fontColor: "black",
-                    fontSize: 14
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    fontColor: "black"
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: text.DATE,
-                    fontColor: "black",
-                    fontSize: 14
-                }
+let globalChart;
+
+function newChart(){
+    globalChart = new Chart(globalChartElem, {
+        type: "line",
+        data: {
+            labels: stats.map(stat => `${(new Date(stat.date)).getDate()}/${(new Date(stat.date)).getMonth() + 1}`),
+            datasets: [{
+                label: `${text.CONFIRMED} ${localCountry.name}`,
+                borderColor: getColor(),
+                data: stats.map(stat => stat.confirmed)
+            }, {
+                label: `${text.RECOVERIES} ${localCountry.name}`,
+                borderColor: getColor(),
+                data: stats.map(stat => stat.recovered)
+            }, {
+                label: `${text.DEATHS} ${localCountry.name}`,
+                borderColor: getColor(),
+                data: stats.map(stat => stat.deaths)
             }]
         },
-        elements: {
-            point: {
-                radius: 4,
-                hoverRadius: 7,
-                hitRadius: 10,
+        options: {
+            chartArea: {
+                backgroundColor: '#fff'
             },
-            line: {
-                borderWidth: 4
-            }
-        },
-        responsive: true,
-        responsiveAnimationDuration: 200,
-        maintainAspectRatio: false,
-        plugins: {
-            zoom: {
-                pan: {
-                    enabled: true,
-                    mode: "xy",
-                    speed: 10,
-                    threshold: 10
+            legend: {
+                labels: {
+                    fontColor: "black",
+                    fontSize: 14
+                }
+            },
+            scales: {
+                yAxes: [{
+                    type: "linear",
+                    ticks: {
+                        fontColor: "black"
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: text.PEOPLE,
+                        fontColor: "black",
+                        fontSize: 14
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "black"
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: text.DATE,
+                        fontColor: "black",
+                        fontSize: 14
+                    }
+                }]
+            },
+            elements: {
+                point: {
+                    radius: 4,
+                    hoverRadius: 7,
+                    hitRadius: 10,
                 },
+                line: {
+                    borderWidth: 4
+                }
+            },
+            responsive: true,
+            responsiveAnimationDuration: 200,
+            maintainAspectRatio: false,
+            plugins: {
                 zoom: {
-                    enabled: true,
-                    sensitivity: 1,
-                    mode: "x",
-                    sensitivity: 0.1
+                    pan: {
+                        enabled: true,
+                        mode: "xy",
+                        speed: 10,
+                        threshold: 10
+                    },
+                    zoom: {
+                        enabled: true,
+                        sensitivity: 1,
+                        mode: "x",
+                        sensitivity: 0.1
+                    }
                 }
             }
-        }
-    },
-});
+        },
+    });
+    $(".no-nations").remove();
+    $("#section1").append(`<div><p class="delete-country" onclick="countryCheckbox(this)" id="${localCountry.code}"><img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;"> <img src="/img/flags/${localCountry.code}.png" alt="Flag" style="max-width: 1rem;"> <span class="country-name strike-link">${localCountry.name}</span></p></div>`);
+}
 
 // $("#country_selector").focusin(function(){
 //     $(".country-list").removeClass("hide");
@@ -361,13 +379,12 @@ $('#globalChart').bind('contextmenu', function(e){
 let colorWheel = new iro.ColorPicker("#chartBackground", {color: '#fff'});
 let tempColor;
 
-$(".colorBtn").on("click", function(){
+$(".colorBtn").parent("div").on("click", function(){
     $('#colorModal').modal('show');
     tempColor = colorWheel.color.hexString;
 });
 
 $("#closeColorModal").on("click", function(){
-    console.log(colorWheel.color);
     $('#colorModal').modal('hide');
     $(".colorBtn").css("background-color", colorWheel.color.rgbaString);
     globalChart.options.chartArea.backgroundColor = colorWheel.color.rgbaString;
@@ -382,6 +399,30 @@ $('#colorModal').on('hidden.bs.modal', function(){
     colorWheel.color.hexString = tempColor;
 });
 
+colorWheel.on('color:change', function(color, changes){
+    $(".colorBtn").css("background-color", color.hexString);
+});
+
 $(function(){
     $('[data-toggle="tooltip"]').tooltip();
-})
+});
+
+$(document).ready(function(){
+    $.ajax({
+        url: "/getLocalCountry",
+        success: function(xhr, status){
+            try {
+                localCountry = JSON.parse(xhr.responseText);
+            } catch(e){
+                localCountry = xhr;
+            }
+        },
+        error: function(xhr,status,error){
+            alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
+        },
+        complete: function(){
+            $("#country_selector").countrySelect("setCountry", localCountry.name);
+            getCountry(newChart);
+        }
+    });
+});

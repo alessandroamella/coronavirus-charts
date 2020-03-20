@@ -30,13 +30,6 @@
         <div class="col-8 col-md-3 col-lg-2 mx-auto order-2 order-md-1">
             <div class="section" id="section1">
                 <h5><%= text.SELECTED_COUNTRIES %>:</h5>
-                <div>
-                    <p class="delete-country" onclick="countryCheckbox(this)" id="<%= country.code %>">
-                        <img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;">
-                        <img src="/img/flags/<%= country.code %>.png" alt="Flag" style="max-width: 1rem;">
-                        <span class="country-name strike-link"><%= country.name %></span>
-                    </p>
-                </div>
             </div>
         </div>
         <div class="col-12 col-md-9 col-lg-10 mx-auto mb-3 order-1 order-md-2">
@@ -117,7 +110,6 @@
                 </div>
 
                 <!-- Paragrafi invisibili da EJS a JavaScript -->
-                <p id="stats-p" style="display: none;"><%= stats %></p>
                 <p id="texts" style="display: none;"><%= JSON.stringify(text) %></p>
 
             </div>
@@ -131,10 +123,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
 <script src="/js/countrySelect.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
-
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js"></script> -->
-<script>
-    var localCountry = { name: "<%= country.name %>", code: "<%= country.code %>" };
-</script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
-<script src="/js/homepage.js"></script>
+<script src="/js/homepage.min.js"></script>
