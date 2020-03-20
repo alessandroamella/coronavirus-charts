@@ -60,7 +60,7 @@ let Stat = mongoose.model("Stat", statSchema);
 
 let global = {};
 
-async function fetchData(){
+async function fetchData(callback){
     try {
         fetch('https://pomber.github.io/covid19/timeseries.json')
             .then(res => res.json())
@@ -100,16 +100,23 @@ async function fetchData(){
                 console.log("Fetched new data!");
                 countriesData.push({
                     country: "Global",
-                    data: global
+                    data: stats["Global"]
                 });
                 let fetchedStats = new Stat({
                     countries: countriesData
                 });
-                fetchedStats.save(function(err){
-                    if(err){
-                        console.log(err);
+                Stat.findOne({}, {}, { sort: { 'lastUpdated' : -1 } }, function(err, foundStat){
+                    // Se salvataggio attuale = vecchio salvataggio, non salvare
+                    if(!foundStat || foundStat.countries[0].data.length != fetchedStats.countries[0].data.length){
+                        console.log("Saved new data!");
+                        fetchedStats.save(function(err){ if(err){console.log(err)}});
+                    } else {
+                        console.log("New data wasn't saved (same length)");
                     }
                 });
+                if(callback){
+                    callback();
+                }
             });
     } catch (e) {
         throw new Error(e);
@@ -187,8 +194,8 @@ app.get("/getLocalCountry", function(req, res){
             });
         } else {
             res.json({
-                name: "China",
-                code: "cn"
+                name: "Global",
+                code: "global"
             });
         }
         
@@ -200,7 +207,7 @@ app.get("/getData/:country", async function(req, res){
     if(country == "South Korea"){
         country = "Korea, South";
     } else if(country == "United States"){
-        country = "US"
+        country = "US";
     } else if(country == "Swaziland"){
         country = "Eswatini";
     } else if(country == "Congo"){
@@ -214,20 +221,27 @@ app.get("/getData/:country", async function(req, res){
     } else if(country == "Czech Republic"){
         country = "Czechia";
     } else if(country == "Global"){
-        if(!stats["Global"]){
-            await fetchData();
+        if(!stats || !stats[country]){
+            fetchData(function(){
+                console.log("Fetched new data because not available!");
+                sendCountry(res, country);
+            });
+            return false;
         }
     }
+    sendCountry(res, country);
+});
+
+function sendCountry(res, country){
     if(stats[country]){
         res.json(stats[country]);
     } else {
         res.status(400).send("Invalid country");
     }
-});
+}
 
 app.get("*", function(req, res){
     res.redirect("/");
 });
-
 
 fetchData();

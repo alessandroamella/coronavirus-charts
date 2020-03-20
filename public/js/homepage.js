@@ -1,9 +1,10 @@
-let localCountry = { name: "China", code: "cn" }
+let localCountry = { name: "Global", code: "global" }
+let createChart = true;
 
 let globalChartElem = document.getElementById('globalChart').getContext('2d');
 
 function getPreferredCountries(){
-    let preferredArr = ["cn", "it", "us"];
+    let preferredArr = ["global", "cn", "it", "us"];
     let flag = true;
     preferredArr.forEach(function(country){
         if(country == localCountry.code){
@@ -49,6 +50,10 @@ $("#country_selector").focus(function(){
 });
 
 function updateChart(){
+    if(createChart){
+        createChart = false;
+        newChart();
+    }
     let alreadyThere = false;
     globalChart.data.datasets.forEach(function(dataset, i){
         if(dataset.label == `${text.CONFIRMED} ${localCountry.name}`){
@@ -85,6 +90,8 @@ function updateChart(){
 };
 
 function getCountry(callback){
+    $("#country_selector").blur();
+    $("#loading-container").show();
     $.ajax({
         url: "/getData/" + localCountry.name,
         success: function(xhr, status){
@@ -106,12 +113,29 @@ function getCountry(callback){
     });
 }
 
-$("#country_selector").on("change", function(){
-    $("#country_selector").blur();
-    $("#loading-container").show();
-    updateCountry();
-    getCountry(updateChart);
+$("#tutorial").on("click", function(){
+    $(this).remove();
 });
+
+let findTimer = false;
+
+$("#country_selector").on("change", function(){
+    changeCountry();
+});
+
+$("#showStats").on("click", function(){
+    changeCountry();
+});
+
+function changeCountry(){
+    if(!findTimer){
+        findTimer = setTimeout(function(){findTimer = false; $("#showStats").prop("disabled", false);}, 1000);
+        $("#showStats").prop("disabled", true);
+        $("#tutorial").remove();
+        updateCountry();
+        getCountry(updateChart);
+    }
+}
 
 $("#country_selector").on("keypress",function(e){
     if(e.which == 13){
@@ -231,6 +255,36 @@ function newChart(){
                         sensitivity: 0.1
                     }
                 }
+            },
+            // container for watermark options
+            watermark: {
+                // the image you would like to show
+                // alternatively, this can be of type "Image"
+                image: "/img/watermark.png",
+                
+                // x and y offsets of the image
+                x: 50,
+                y: 50,
+                
+                // opacity of the image, from 0 to 1 (default: 1)
+                opacity: 0.1,
+                
+                // x-alignment of the image (default: "left")
+                // valid values: "left", "middle", "right"
+                alignX: "right",
+                // y-alignment of the image (default: "top")
+                // valid values: "top", "middle", "bottom"
+                alignY: "bottom",
+                
+                // if true, aligns the watermark to the inside of the chart area (where the lines are)
+                // (where the lines are)
+                // if false, aligns the watermark to the inside of the canvas
+                // see samples/alignToChartArea.html
+                alignToChartArea: false,
+                
+                // determines whether the watermark is drawn on top of or behind the chart
+                // valid values: "front", "back"
+                position: "front",
             }
         },
     });
@@ -280,7 +334,8 @@ $("#saveAsImage").click(function(){
     // canvas.toBlob(function(blob){
     //     saveAs(blob, "grafica.png");
     // });
-    saveAs(globalChart.toBase64Image(), text.FILE_NAME + ".png");
+    alert("Not yet available. Right click on the chart and choose \"Save as image\" for a similar result!");
+    // saveAs(globalChart.toBase64Image(), text.FILE_NAME + ".jpg");
 
     // let canvas = document.getElementById("globalChart");
     // var image = canvas.toDataURL("image/jpeg", 0.9);
@@ -412,13 +467,10 @@ $(document).ready(function(){
             } catch(e){
                 localCountry = xhr;
             }
+            $("#country_selector").countrySelect("setCountry", localCountry.name);
         },
         error: function(xhr,status,error){
             alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
-        },
-        complete: function(){
-            $("#country_selector").countrySelect("setCountry", localCountry.name);
-            getCountry(newChart);
         }
     });
 });

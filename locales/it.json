@@ -8,6 +8,7 @@
     "LOADING": "Caricamento...",
     "COUNTRY": "Nazione",
     "SELECTED_COUNTRIES": "Nazioni selezionate",
+    "SHOW_STATS": "Mostra Dati",
     "NO_COUNTRIES": "Nessuna nazione selezionata",
     "LATEST_STATS": "Ultimi Dati sul Coronavirus",
     "CONFIRMED": "Casi confermati in",
@@ -33,5 +34,6 @@
     "SHARE": "Condividi",
     "ZOOM_RESET": "Resetta zoom",
     "SAVE_AS_IMAGE": "Salva come immagine",
+    "INSTRUCTIONS": "Scrivi il nome della nazione che vuoi vedere, poi premi invio o il tasto \"Mostra Dati\".",
     "ERROR_LETMEKNOW": "Se credi che sia un errore, per favore contattami e fammelo sapere"
 }

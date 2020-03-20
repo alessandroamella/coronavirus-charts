@@ -7,6 +7,7 @@
     "LANGUAGE": "Language",
     "LOADING": "Loading...",
     "COUNTRY": "Country",
+    "SHOW_STATS": "Show Stats",
     "SELECTED_COUNTRIES": "Selected countries",
     "NO_COUNTRIES": "No country selected",
     "LATEST_STATS": "Latest Coronavirus Stats",
@@ -33,5 +34,6 @@
     "SHARE": "Share",
     "ZOOM_RESET": "Reset zoom",
     "SAVE_AS_IMAGE": "Save as image",
+    "INSTRUCTIONS": "Type the name of the country you want to see, then hit enter or press the \"Show Stats\" button.",
     "ERROR_LETMEKNOW": "If you believe this is an error, please contact me and let me know"
 }

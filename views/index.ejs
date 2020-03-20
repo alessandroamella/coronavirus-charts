@@ -38,10 +38,15 @@
                 <!-- Header ultime statistiche -->
                 <h1 class="mb-b"><%= text.LATEST_STATS %></h1>
 
+                <div id="tutorial" style="cursor: pointer;">
+                    <p style="font-style: italic; font-weight: 600; text-decoration: underline; color: orangered;"><%= text.INSTRUCTIONS %></p>
+                </div>
+
                 <div style="display: inline;">
                     <!-- Selezione nazione -->
                     <label for="country_selector" style="font-weight: 700;"><%= text.COUNTRY %>: </label>
                     <input id="country_selector" type="text" autocomplete="off">
+                    <button type="button" id="showStats" class="m-1 btn btn-dark" style="transition-duration: 0.3s;"><%= text.SHOW_STATS %></button>
                 </div>
 
                 <!-- Grafico -->
@@ -123,4 +128,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
 <script src="/js/countrySelect.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
-<script src="/js/homepage.min.js"></script>
+<script src="https://rawcdn.githack.com/AlbinoDrought/chartjs-plugin-watermark/760b315264dadad6912a9c71ba4b1ffd8779bc22/chartjs-plugin-watermark.min.js"></script>
+<script src="/js/homepage.js"></script>
