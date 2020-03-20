@@ -403,10 +403,6 @@ colorWheel.on('color:change', function(color, changes){
     $(".colorBtn").css("background-color", color.hexString);
 });
 
-$(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-
 $(document).ready(function(){
     $.ajax({
         url: "/getLocalCountry",
