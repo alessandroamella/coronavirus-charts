@@ -171,6 +171,21 @@ Chart.pluginService.register({
     }
 });
 
+let watermarkProp = {};
+if($(document).width() > $(document).height()){
+    watermarkProp.width = $(document).width() / 5;
+    watermarkProp.height = $(document).width() / 20;
+    watermarkProp.pr = 100;
+    watermarkProp.pb = 100;
+    watermarkProp.opacity = 0.2;
+} else {
+    watermarkProp.width = $(document).height() / 8;
+    watermarkProp.height = $(document).height() / 32;
+    watermarkProp.pr = 10;
+    watermarkProp.pb = 60;
+    watermarkProp.opacity = 0.2;
+};
+
 let globalChart;
 
 function newChart(){
@@ -263,11 +278,16 @@ function newChart(){
                 image: "/img/watermark.png",
                 
                 // x and y offsets of the image
-                x: 50,
-                y: 50,
+                x: watermarkProp.pr,
+                y: watermarkProp.pb,
+        
+                // width and height to resize the image to
+                // image is not resized if these values are not set
+                width: watermarkProp.width,
+                height: watermarkProp.height,
                 
                 // opacity of the image, from 0 to 1 (default: 1)
-                opacity: 0.1,
+                opacity: watermarkProp.opacity,
                 
                 // x-alignment of the image (default: "left")
                 // valid values: "left", "middle", "right"
@@ -284,7 +304,7 @@ function newChart(){
                 
                 // determines whether the watermark is drawn on top of or behind the chart
                 // valid values: "front", "back"
-                position: "front",
+                position: "front"
             }
         },
     });

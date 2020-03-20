@@ -1,6 +1,7 @@
-let express = require("express");
+const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const i18n = require("i18n-express");
@@ -10,11 +11,20 @@ const schedule = require('node-schedule');
 const requestIp = require('request-ip');
 require("dotenv").config();
 
+// Require languages
+let lang = {
+    en: require("./locales/en.json"),
+    it: require("./locales/it.json")
+}
+
 app.set("view engine", "ejs");
 
 // BODY PARSER SETUP
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// COOKIE PARSER SETUP
+app.use(cookieParser());
 
 // MONGOOSE SETUP
 mongoose.set('useNewUrlParser', true);
@@ -27,7 +37,7 @@ mongoose.connect(process.env.MONGODB_URI, function(){
     console.log("Connected to MongoDB Database!");
 });
 
-app.use(requestIp.mw())
+app.use(requestIp.mw());
 
 app.use(
     i18n({
@@ -168,13 +178,28 @@ function getIp(req, res, callback){
 }
 
 app.get("/", function(req, res){
+    if(req.query.lang == "it" || req.query.lang == "en"){
+        res.cookie("lang", req.query.lang);
+        res.render("index", { text: lang[req.query.lang] });
+        return false;
+    }
+    if(req.cookies.lang == "it" || req.cookies.lang == "en"){
+        res.render("index", { text: lang[req.cookies.lang] });
+    } else {
+        let localLang = req.headers["accept-language"].split(",")[1].split(";")[0];
+        if(localLang == "it" || localLang == "en"){
+            res.cookie("lang", localLang);
+            res.render("index", { text: lang[localLang] });
+        } else {
+            res.render("index", { text: "en" });
+        }
+    }
     // getIp(req, res, function(res, json){
     //     if(!json){
     //         res.send("Error while loading the homepage. Sorry for the inconvenience!");
     //         return false;
     //     }
     //     if(json.country){
-            res.render("index");
     //     } else {
     //         res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
     //     }
