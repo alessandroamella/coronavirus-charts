@@ -10,6 +10,8 @@ const schedule = require('node-schedule');
 const requestIp = require('request-ip');
 require("dotenv").config();
 
+const localeMiddleware = require('express-locale');
+
 // Require languages
 let lang = {
     en: require("./locales/en.json"),
@@ -37,6 +39,8 @@ mongoose.connect(process.env.MONGODB_URI, function(){
 });
 
 app.use(requestIp.mw());
+
+app.use(localeMiddleware());
 
 // METHOD OVERRIDE SETUP
 app.use(methodOverride("_method"));
@@ -181,12 +185,8 @@ app.use(function(req, res, next){
     if(req.cookies.lang == "it" || req.cookies.lang == "en"){
         req.lang = req.cookies.lang;
     } else {
-        console.log("\n\n\n\n");
-        console.log("req.headers[\"accept-language\"]");
-        console.log(req.headers["accept-language"]);
-        console.log("\n\n\n\n");
-        if(req.headers["accept-language"]){
-            let localLang = req.headers["accept-language"].split(",")[1].split(";")[0];
+        if(req.locale.language){
+            let localLang = req.locale.language;
             if(localLang == "it" || localLang == "en"){
                 res.cookie("lang", localLang);
                 req.lang = localLang;
