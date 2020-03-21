@@ -169,8 +169,7 @@ Chart.pluginService.register({
             ctx.restore();
         }
     }, 
-    afterRender: function(c) {
-        console.log("afterRender called");
+    afterRender: function(c){
         var ctx = c.chart.ctx;
         ctx.save();
         ctx.globalCompositeOperation = 'destination-over';
