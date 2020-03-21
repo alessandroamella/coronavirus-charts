@@ -144,6 +144,10 @@ const server = app.listen(process.env.PORT, process.env.IP, function(){
 
 function getIp(req, res, callback){
     try {
+        if(!req.clientIp){
+            callback(res, false);
+            return false;
+        }
         fetch(`http://ip-api.com/json/${req.clientIp}`)
         .then(res => res.json())
         .then(async function(json){
