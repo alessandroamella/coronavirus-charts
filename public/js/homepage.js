@@ -346,6 +346,7 @@ function countryCheckbox(element){
 // }
 
 $("#saveAsImage").click(function(){
+    $(this).attr("href", globalChart.toBase64Image());
     // var canvas = document.getElementById("canvas"),
     //     ctx = canvas.getContext("2d");
 
@@ -355,7 +356,7 @@ $("#saveAsImage").click(function(){
     // canvas.toBlob(function(blob){
     //     saveAs(blob, "grafica.png");
     // });
-    alert("Not yet available. Right click on the chart and choose \"Save as image\" for a similar result!");
+    // alert("Not yet available. Right click on the chart and choose \"Save as image\" for a similar result!");
     // saveAs(globalChart.toBase64Image(), text.FILE_NAME + ".jpg");
 
     // let canvas = document.getElementById("globalChart");
@@ -454,10 +455,15 @@ $('#globalChart').bind('contextmenu', function(e){
 
 let colorWheel = new iro.ColorPicker("#chartBackground", {color: '#fff'});
 let tempColor;
+let finalColor;
 
 $(".colorBtn").parent("div").on("click", function(){
     $('#colorModal').modal('show');
     tempColor = colorWheel.color.hexString;
+});
+
+$("#cancelColorModal").on("click", function(){
+    finalColor = tempColor;
 });
 
 $("#closeColorModal").on("click", function(){
@@ -472,10 +478,12 @@ $("#resetColorModal").on("click", function(){
 });
 
 $('#colorModal').on('hidden.bs.modal', function(){
-    colorWheel.color.hexString = tempColor;
+    colorWheel.color.hexString = finalColor;
+    $(".colorBtn").css("background-color", finalColor);
 });
 
 colorWheel.on('color:change', function(color, changes){
+    finalColor = colorWheel.color.hexString;
     $(".colorBtn").css("background-color", color.hexString);
 });
 
@@ -510,4 +518,24 @@ $(document).ready(function(){
             }
         });
     }
+});
+    
+$("#zoom").on("change", function(){
+    if(this.value == "off"){
+        globalChart.options.plugins.zoom.zoom.enabled = false;
+    } else {
+        globalChart.options.plugins.zoom.zoom.enabled = true;
+        globalChart.options.plugins.zoom.zoom.mode = this.value;
+    }
+    globalChart.update();
+});
+    
+$("#pan").on("change", function(){
+    if(this.value == "off"){
+        globalChart.options.plugins.zoom.pan.enabled = false;
+    } else {
+        globalChart.options.plugins.zoom.pan.enabled = true;
+        globalChart.options.plugins.zoom.pan.mode = this.value;
+    }
+    globalChart.update();
 });

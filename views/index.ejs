@@ -18,7 +18,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="resetColorModal" class="btn btn-light"><%= text.RESET %></button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= text.CANCEL %></button>
+                <button type="button" id="cancelColorModal" class="btn btn-secondary" data-dismiss="modal"><%= text.CANCEL %></button>
                 <button type="button" id="closeColorModal" class="btn btn-primary"><%= text.SAVE %></button>
             </div>
         </div>
@@ -111,8 +111,28 @@
                             </div>
                         </div>
                         <div class="col">
+                            <div>
+                                <label for="zoom">Zoom:</label>
+                                <select id="zoom" style="border-radius: 5px; border: 1px solid #ccc;">
+                                    <option value="X">X</option>
+                                    <option value="y">Y</option>
+                                    <option value="xy">XY</option>
+                                    <option value="off">Off</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="pan">Pan:</label>
+                                <select id="pan" style="border-radius: 5px; border: 1px solid #ccc;">
+                                    <option value="X">X</option>
+                                    <option value="y">Y</option>
+                                    <option value="xy">XY</option>
+                                    <option value="off">Off</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
                             <button type="button" class="btn btn-light mb-2" id="resetZoom"><%= text.ZOOM_RESET %></button>
-                            <a href="#" role="button" class="btn btn-dark" id="saveAsImage"><%= text.SAVE_AS_IMAGE %></a>
+                            <a href="#" role="button" class="btn btn-dark" id="saveAsImage" download="<%= text.FILE_NAME %>.jpg"><%= text.SAVE_AS_IMAGE %></a>
                         </div>
                     </div>
                 </div>
