@@ -177,10 +177,14 @@ app.use(function(req, res, next){
     if(req.cookies.lang == "it" || req.cookies.lang == "en"){
         req.lang = req.cookies.lang;
     } else {
-        let localLang = req.headers["accept-language"].split(",")[1].split(";")[0];
-        if(localLang == "it" || localLang == "en"){
-            res.cookie("lang", localLang);
-            req.lang = localLang;
+        if(req.headers["accept-language"]){
+            let localLang = req.headers["accept-language"].split(",")[1].split(";")[0];
+            if(localLang == "it" || localLang == "en"){
+                res.cookie("lang", localLang);
+                req.lang = localLang;
+            } else {
+                req.lang = "en";
+            }
         } else {
             req.lang = "en";
         }
