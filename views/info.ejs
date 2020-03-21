@@ -20,12 +20,16 @@
 <div class="container mb-3">
     <div class="big-section mx-auto">
         <a href="/" class="back-link" style="font-size: 1.5rem;">&larr; <%= text.info.BACK_HOME %></a>
-        <h3 style="margin-top: 0.5rem;"><%= text.info.WEBSITE_INFO %></h3>
+        <h3 style="margin-top: 0.5rem;" id="websiteInfo"><%= text.info.WEBSITE_INFO %></h3>
         <p id="aboutMe">
             <strong><%= text.info.ABOUT_ME.title %></strong>
             <br><%= text.info.ABOUT_ME.line1 %>
             <br><%= text.info.ABOUT_ME.line2 %>
-            <br><%= text.info.ABOUT_ME.line3 %> <a href="mailto:info@bitrey.it">info@bitrey.it</a>
+            <br><%= text.info.ABOUT_ME.line3 %>
+        </p>
+        <p id="contacts">
+            <strong><%= text.info.CONTACTS %></strong>
+            <br>Email: <a href="mailto:info@bitrey.it">info@bitrey.it</a>
         </p>
         <p id="dataUpdates">
             <strong><%= text.info.DATA_UPDATES.title %></strong>

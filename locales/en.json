@@ -35,6 +35,7 @@
     "SHARE": "Share",
     "ZOOM_RESET": "Reset zoom",
     "SAVE_AS_IMAGE": "Save as image",
+    "ALL_RIGHTS_RESERVED": "All Rights Reserved",
     "INSTRUCTIONS": "Type the name of the country you want to see, then hit enter or press the \"Show Stats\" button.",
     "ERROR_LETMEKNOW": "If you believe this is an error, please contact me and let me know",
     "info": {
@@ -43,9 +44,10 @@
         "ABOUT_ME": {
             "title": "About me",
             "line1": "Hi! I'm Alessandro, Bitrey on the internet, a full-stack web developer based in Modena.",
-            "line2": "I've been focused on website creation for two years, from design to code, using the latest technologies and remaining oriented to the current demands of the internet world, especially mobile design.",
-            "line3": "If you need a website, don't hesitate to email me at"
+            "line2": "I've been focused on website creation for two years, from design to code, using the latest technologies while remaining oriented to the current demands of the internet world, especially mobile design.",
+            "line3": "If you need a website, don't hesitate to email me"
         },
+        "CONTACTS": "Contacts",
         "DATA_UPDATES": {
             "title": "How is the data updated?",
             "line1": "The data is automatically updated every hour, however new stats are sent only 3 times a day."
@@ -54,6 +56,8 @@
             "title": "But where does it come from?",
             "line1": "It comes from The Center for Systems Science and Engineering (CSSE) of JHU."
         },
-        "CREDITS": "Credits"
+        "CREDITS": "Credits",
+        "PRIVACY_POLICY": "Privacy policy",
+        "TERMS_AND_CONDITIONS": "Terms and conditions"
     }
 }

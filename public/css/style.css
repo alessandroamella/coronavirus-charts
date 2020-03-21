@@ -91,16 +91,6 @@ body {
     cursor: pointer;
 }
 
-/* .delete-country:hover {
-    display: inline;
-} */
-
-#footer {
-    display: inline-flex;
-    margin-top: 1rem;
-    margin-bottom: 3rem;
-}
-
 .back-link, .back-link:visited {
     text-decoration: none;
     position: relative;
@@ -177,3 +167,14 @@ canvas {
     background-color: white;
     border-radius: 5px;
 }
+
+.white {
+    color: white;
+}
+
+footer {
+    clear: both;
+    position: relative;
+    background: rgba(136,201,255,0.95);
+}
+
