@@ -463,24 +463,12 @@ $(document).ready(function(){
             code: $("#country_selector").countrySelect("getSelectedCountryData").iso2
         }
     } else {
-        $.ajax({
-            url: "/getLocalCountry",
-            success: function(xhr, status){
-                try {
-                    localCountry = JSON.parse(xhr.responseText);
-                } catch(e){
-                    localCountry = xhr;
-                }
-                if(localCountry == "badcountry"){
-                    localCountry = { name: "Global", code: "global" };
-                    return false;
-                }
-                $("#country_selector").countrySelect("setCountry", localCountry.name);
-            },
-            error: function(xhr,status,error){
-                alert(`${xhr.status} ${xhr.statusText}, ${text.CANT_REQUEST} /${localCountry.name}: ${xhr.responseText}. ${text.ERROR_LETMEKNOW}`);
-            }
-        });
+        localCountry = JSON.parse($("#localCountry").text());
+        if(localCountry == "badcountry"){
+            localCountry = { name: "Global", code: "global" };
+        }
+        $("#localCountry").remove();
+        $("#country_selector").countrySelect("setCountry", localCountry.name);
     }
 });
     

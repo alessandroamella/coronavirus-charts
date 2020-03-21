@@ -190,7 +190,25 @@ app.use(function(req, res, next){
 });
 
 app.get("/", function(req, res){
-    res.render("index");
+    let localCountry;
+    getIp(req, res, function(res, json){
+        if(!json){
+            localCountry = "badcountry";
+            return false;
+        }
+        if(json.country){
+            localCountry = {
+                name: json.country,
+                code: json.countryCode.toLowerCase()
+            };
+        } else {
+            localCountry = {
+                name: "Global",
+                code: "global"
+            };
+        }
+        res.render("index", {localCountry: localCountry});
+    });
     // getIp(req, res, function(res, json){
     //     if(!json){
     //         res.send("Error while loading the homepage. Sorry for the inconvenience!");
@@ -205,27 +223,6 @@ app.get("/", function(req, res){
 
 app.get("/info", function(req, res){
     res.render("info");
-});
-
-app.get("/getLocalCountry", function(req, res){
-    getIp(req, res, function(res, json){
-        if(!json){
-            res.send("badcountry");
-            return false;
-        }
-        if(json.country){
-            res.json({
-                name: json.country,
-                code: json.countryCode.toLowerCase()
-            });
-        } else {
-            res.json({
-                name: "Global",
-                code: "global"
-            });
-        }
-        
-    });
 });
 
 app.get("/getData/:country", async function(req, res){
