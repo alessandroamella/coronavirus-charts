@@ -210,7 +210,7 @@ app.get("/info", function(req, res){
 app.get("/getLocalCountry", function(req, res){
     getIp(req, res, function(res, json){
         if(!json){
-            res.status(500).send("Error while requesting the local country. Sorry for the inconvenience!");
+            res.send("badcountry");
             return false;
         }
         if(json.country){

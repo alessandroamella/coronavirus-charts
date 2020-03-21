@@ -471,6 +471,10 @@ $(document).ready(function(){
                 } catch(e){
                     localCountry = xhr;
                 }
+                if(localCountry == "badcountry"){
+                    localCountry = { name: "Global", code: "global" };
+                    return false;
+                }
                 $("#country_selector").countrySelect("setCountry", localCountry.name);
             },
             error: function(xhr,status,error){
