@@ -1,0 +1,58 @@
+<%- include ('./partials/header') %>
+
+<style>
+    p {
+        margin-top: 1rem;
+    }
+    a {
+        color: #212529;
+    }
+    a:hover {
+        color: #212529;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<div class="container mb-3">
+    <div class="big-section mx-auto">
+        <a href="/" class="back-link" style="font-size: 1.5rem;">&larr; <%= text.info.BACK_HOME %></a>
+        <h3 style="margin-top: 0.5rem;"><%= text.info.WEBSITE_INFO %></h3>
+        <p id="aboutMe">
+            <strong><%= text.info.ABOUT_ME.title %></strong>
+            <br><%= text.info.ABOUT_ME.line1 %>
+            <br><%= text.info.ABOUT_ME.line2 %>
+            <br><%= text.info.ABOUT_ME.line3 %> <a href="mailto:info@bitrey.it">info@bitrey.it</a>
+        </p>
+        <p id="dataUpdates">
+            <strong><%= text.info.DATA_UPDATES.title %></strong>
+            <br><%= text.info.DATA_UPDATES.line1 %>
+        </p>
+        <p id="dataSource">
+            <strong><%= text.info.DATA_SOURCE.title %></strong>
+            <br><%= text.info.DATA_SOURCE.line1 %>
+        </p>
+        <p id="credits" style="margin-bottom: 0;">
+            <strong><%= text.info.CREDITS %></strong>
+            <ul style="margin-top: 0;">
+                <li><a href="https://github.com/pomber/covid19">COVID19 API</a></li>
+                <li>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a>, <a
+                        href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> and <a
+                        href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a
+                        href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></li>
+                <li><a href="https://www.jqueryscript.net/form/country-picker-flags.html">Country Picker with Flags</a></li>
+                <li><a href="https://www.chartjs.org/">Chart.js</a></li>
+                <li><a href="https://github.com/chartjs/chartjs-plugin-zoom">Zoom plugin</a></li>
+                <li><a href="https://github.com/AlbinoDrought/chartjs-plugin-watermark">Watermark plugin</a></li>
+                <li><a href="https://github.com/jaames/iro.js">iro.js color picker</a></li>
+                <li><a href="https://getbootstrap.com/">Bootstrap 4</a></li>
+                <li><a href="https://sharethis.com/">ShareThis</a></li>
+            </ul>        
+        </p>
+    </div>
+</div>
+
+<%- include ('./partials/footer') %>

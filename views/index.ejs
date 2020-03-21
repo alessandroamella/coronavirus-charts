@@ -18,122 +18,139 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="resetColorModal" class="btn btn-light"><%= text.RESET %></button>
-                <button type="button" id="cancelColorModal" class="btn btn-secondary" data-dismiss="modal"><%= text.CANCEL %></button>
+                <button type="button" id="cancelColorModal" class="btn btn-secondary"
+                    data-dismiss="modal"><%= text.CANCEL %></button>
                 <button type="button" id="closeColorModal" class="btn btn-primary"><%= text.SAVE %></button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="my-3 container-fluid">
-    <div class="row justify-content-center text-center mx-auto">
-        <div class="col-8 col-md-3 col-lg-2 mx-auto order-2 order-md-1">
-            <div class="section" id="section1">
-                <h5><%= text.SELECTED_COUNTRIES %>:</h5>
-                <p class="no-nations text-muted" style="font-size: 0.8rem"><%= text.NO_COUNTRIES %></p>
+<div class="my-3 container-xl">
+    <div class="text-center mx-auto">
+        <div class="section" id="section2">
+
+            <!-- Header ultime statistiche -->
+            <h1 class="mb-b"><%= text.LATEST_STATS %></h1>
+
+            <div id="tutorial" style="cursor: pointer;">
+                <p style="font-style: italic; font-weight: 600; text-decoration: underline;"><%= text.INSTRUCTIONS %>
+                </p>
             </div>
-        </div>
-        <div class="col-12 col-md-9 col-lg-10 mx-auto mb-3 order-1 order-md-2">
-            <div class="section" id="section2">
 
-                <!-- Header ultime statistiche -->
-                <h1 class="mb-b"><%= text.LATEST_STATS %></h1>
-
-                <div id="tutorial" style="cursor: pointer;">
-                    <p style="font-style: italic; font-weight: 600; text-decoration: underline;"><%= text.INSTRUCTIONS %></p>
-                </div>
-
-                <div style="display: inline;">
-                    <!-- Selezione nazione -->
-                    <label for="country_selector" style="font-weight: 700;"><%= text.COUNTRY %>: </label>
-                    <input id="country_selector" type="text" autocomplete="off">
-                </div>
-                <button type="button" id="showStats" class="m-1 mt-3 btn btn-dark mx-auto" style="display: block; transition-duration: 0.3s;"><%= text.SHOW_STATS %></button>
-
-                <!-- Grafico -->
-                <div class="chart-container mx-auto mt-3">
-                    <canvas id="globalChart"></canvas>
-                </div>
-
-                <!-- Caricamento -->
-                <div id="loading-container">
-                    <div class="spinner-border" id="loading-spinner" role="status">
-                        <span class="sr-only"><%= text.LOADING %></span>
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="small-section">
+                        <div style="display: inline;">
+                            <!-- Selezione nazione -->
+                            <label for="country_selector" style="font-weight: 700;"><%= text.COUNTRY %>: </label>
+                            <input id="country_selector" class="form-control" type="text">
+                        </div>
+                        <button type="button" id="showStats" class="m-1 mt-3 btn btn-dark mx-auto"
+                            style="display: block; transition-duration: 0.3s;"><%= text.SHOW_STATS %></button>
                     </div>
                 </div>
+                <div class="col-12 col-lg-4">
+                    <div class="small-section" id="section1">
+                        <h5><%= text.SELECTED_COUNTRIES %>:</h5>
+                        <p class="no-nations text-muted" style="font-size: 0.8rem; margin-bottom: 0;">
+                            <%= text.NO_COUNTRIES %></p>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Opzioni grafico -->
-                <div id="chartOptions" style="display: none;">
-                    <h4 class="text-center mt-4"><%= text.CHART_OPTIONS %></h4>
-                    <div class="row align-items-center justify-content-center mx-auto m-2">
-                        <div class="text-left col">
-                            <p class="mb-1"><%= text.AXIS_TYPE %>:</p>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="linearAxis" name="axisType" class="custom-control-input" value="linear" checked>
-                                <label class="custom-control-label" for="linearAxis"><%= text.LINEAR %></label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="logarithmicAxis" name="axisType" class="custom-control-input" value="logarithmic">
-                                <label class="custom-control-label" for="logarithmicAxis"><%= text.LOGARITHMIC %></label>
-                            </div>
+            <!-- Grafico -->
+            <div class="chart-container mx-auto mt-3">
+                <canvas id="globalChart"></canvas>
+            </div>
+
+            <!-- Caricamento -->
+            <div id="loading-container">
+                <div class="spinner-border" id="loading-spinner" role="status">
+                    <span class="sr-only"><%= text.LOADING %></span>
+                </div>
+            </div>
+
+            <!-- Opzioni grafico -->
+            <div id="chartOptions" style="display: none;">
+                <h4 class="text-center mt-4"><%= text.CHART_OPTIONS %></h4>
+                <div class="row align-items-center justify-content-center mx-auto m-2">
+                    <div class="text-left col">
+                        <p class="mb-1"><%= text.AXIS_TYPE %>:</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="linearAxis" name="axisType" class="custom-control-input"
+                                value="linear" checked>
+                            <label class="custom-control-label" for="linearAxis"><%= text.LINEAR %></label>
                         </div>
-                        <div class="text-left col">
-                            <p class="mb-1"><%= text.GRAPH_TYPE %>:</p>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="lineChart" name="chartType" class="custom-control-input" value="line" checked>
-                                <label class="custom-control-label" for="lineChart"><%= text.LINE %></label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="barChart" name="chartType" class="custom-control-input" value="bar">
-                                <label class="custom-control-label" for="barChart"><%= text.BAR %></label>
-                            </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="logarithmicAxis" name="axisType" class="custom-control-input"
+                                value="logarithmic">
+                            <label class="custom-control-label" for="logarithmicAxis"><%= text.LOGARITHMIC %></label>
                         </div>
-                        <div class="text-left col">
-                            <p class="mb-1"><%= text.TEXT_STYLE %>:</p>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="textNormal" name="textStyle" class="custom-control-input" value="normal" checked>
-                                <label class="custom-control-label" for="textNormal"><%= text.NORMAL %></label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="textBold" name="textStyle" class="custom-control-input" value="bold">
-                                <label class="custom-control-label" for="textBold"><%= text.BOLD %></label>
-                            </div>
+                    </div>
+                    <div class="text-left col">
+                        <p class="mb-1"><%= text.GRAPH_TYPE %>:</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="lineChart" name="chartType" class="custom-control-input"
+                                value="line" checked>
+                            <label class="custom-control-label" for="lineChart"><%= text.LINE %></label>
                         </div>
-                        <div class="col">
-                            <div class="custom-control custom-checkbox pb-2">
-                                <input type="checkbox" class="custom-control-input" id="datasetBackground">
-                                <label class="custom-control-label" for="datasetBackground"><%= text.DATASET_BACKGROUND %></label>
-                            </div>
-                            <div style="display: inline-block;" class="align-items-center" id="chartBackgroundDiv" class="pt-1">
-                                <label for="chartBackground" style="line-height: 1.2;"><%= text.CHART_BACKGROUND_COLOR %>: </label>
-                                <button type="button" class="colorBtn"></button>
-                                <!-- <input id="chartBackground" class="form-control" type="text" value="#FFFFFF" style="display: inline; max-width: 5rem; overflow: hidden;"> -->
-                            </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="barChart" name="chartType" class="custom-control-input" value="bar">
+                            <label class="custom-control-label" for="barChart"><%= text.BAR %></label>
                         </div>
-                        <div class="col">
-                            <div>
-                                <label for="zoom">Zoom:</label>
-                                <select id="zoom" style="border-radius: 5px; border: 1px solid #ccc;">
-                                    <option value="X">X</option>
-                                    <option value="y">Y</option>
-                                    <option value="xy">XY</option>
-                                    <option value="off">Off</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="pan">Pan:</label>
-                                <select id="pan" style="border-radius: 5px; border: 1px solid #ccc;">
-                                    <option value="X">X</option>
-                                    <option value="y">Y</option>
-                                    <option value="xy">XY</option>
-                                    <option value="off">Off</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="text-left col">
+                        <p class="mb-1"><%= text.TEXT_STYLE %>:</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="textNormal" name="textStyle" class="custom-control-input"
+                                value="normal" checked>
+                            <label class="custom-control-label" for="textNormal"><%= text.NORMAL %></label>
                         </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-light mb-2" id="resetZoom"><%= text.ZOOM_RESET %></button>
-                            <a href="#" role="button" class="btn btn-dark" id="saveAsImage" download="<%= text.FILE_NAME %>.jpg"><%= text.SAVE_AS_IMAGE %></a>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="textBold" name="textStyle" class="custom-control-input"
+                                value="bold">
+                            <label class="custom-control-label" for="textBold"><%= text.BOLD %></label>
                         </div>
+                    </div>
+                    <div class="col">
+                        <div class="custom-control custom-checkbox pb-2">
+                            <input type="checkbox" class="custom-control-input" id="datasetBackground">
+                            <label class="custom-control-label"
+                                for="datasetBackground"><%= text.DATASET_BACKGROUND %></label>
+                        </div>
+                        <div style="display: inline-block;" class="align-items-center" id="chartBackgroundDiv"
+                            class="pt-1">
+                            <label for="chartBackground" style="line-height: 1.2;"><%= text.CHART_BACKGROUND_COLOR %>:
+                            </label>
+                            <button type="button" class="colorBtn"></button>
+                            <!-- <input id="chartBackground" class="form-control" type="text" value="#FFFFFF" style="display: inline; max-width: 5rem; overflow: hidden;"> -->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <label for="zoom">Zoom:</label>
+                            <select id="zoom" style="border-radius: 5px; border: 1px solid #ccc;">
+                                <option value="X">X</option>
+                                <option value="y">Y</option>
+                                <option value="xy">XY</option>
+                                <option value="off">Off</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pan">Pan:</label>
+                            <select id="pan" style="border-radius: 5px; border: 1px solid #ccc;">
+                                <option value="X">X</option>
+                                <option value="y">Y</option>
+                                <option value="xy">XY</option>
+                                <option value="off">Off</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-light mb-2" id="resetZoom"><%= text.ZOOM_RESET %></button>
+                        <a href="#" role="button" class="btn btn-dark" id="saveAsImage"
+                            download="<%= text.FILE_NAME %>.jpg"><%= text.SAVE_AS_IMAGE %></a>
                     </div>
                 </div>
 
@@ -142,7 +159,6 @@
 
             </div>
         </div>
-    </div>
 </div>
 <%- include ('./partials/footer') %>
 
@@ -151,5 +167,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
 <script src="/js/countrySelect.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
-<script src="https://rawcdn.githack.com/AlbinoDrought/chartjs-plugin-watermark/760b315264dadad6912a9c71ba4b1ffd8779bc22/chartjs-plugin-watermark.min.js"></script>
+<script
+    src="https://rawcdn.githack.com/AlbinoDrought/chartjs-plugin-watermark/760b315264dadad6912a9c71ba4b1ffd8779bc22/chartjs-plugin-watermark.min.js"></script>
 <script src="/js/homepage.min.js"></script>

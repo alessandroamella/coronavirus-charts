@@ -122,7 +122,7 @@ async function fetchData(callback){
     }
 }
 
-let fetchDataSchedule = schedule.scheduleJob("0 0 0 * * *", function(fireDate){
+let fetchDataSchedule = schedule.scheduleJob("0 0 * * * *", function(fireDate){
     fetchData();
     console.log('Data save was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
 });
@@ -166,24 +166,31 @@ function getIp(req, res, callback){
     }
 }
 
-app.get("/", function(req, res){
-    // Language
+app.use(function(req, res, next){
+    res.locals.path = req.path;
     if(req.query.lang == "it" || req.query.lang == "en"){
         res.cookie("lang", req.query.lang);
-        res.render("index", { text: lang[req.query.lang] });
+        res.locals.text = lang[req.query.lang];
+        next();
         return false;
     }
     if(req.cookies.lang == "it" || req.cookies.lang == "en"){
-        res.render("index", { text: lang[req.cookies.lang] });
+        req.lang = req.cookies.lang;
     } else {
         let localLang = req.headers["accept-language"].split(",")[1].split(";")[0];
         if(localLang == "it" || localLang == "en"){
             res.cookie("lang", localLang);
-            res.render("index", { text: lang[localLang] });
+            req.lang = localLang;
         } else {
-            res.render("index", { text: "en" });
+            req.lang = "en";
         }
     }
+    res.locals.text = lang[req.lang];
+    next();
+});
+
+app.get("/", function(req, res){
+    res.render("index");
     // getIp(req, res, function(res, json){
     //     if(!json){
     //         res.send("Error while loading the homepage. Sorry for the inconvenience!");
@@ -194,6 +201,10 @@ app.get("/", function(req, res){
     //         res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
     //     }
     // });
+});
+
+app.get("/info", function(req, res){
+    res.render("info");
 });
 
 app.get("/getLocalCountry", function(req, res){

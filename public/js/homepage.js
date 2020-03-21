@@ -168,6 +168,15 @@ Chart.pluginService.register({
             ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
             ctx.restore();
         }
+    }, 
+    afterRender: function(c) {
+        console.log("afterRender called");
+        var ctx = c.chart.ctx;
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-over';
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, c.chart.width, c.chart.height);
+        ctx.restore();
     }
 });
 
@@ -313,14 +322,6 @@ function newChart(){
     $("#section1").append(`<div><p class="delete-country" onclick="countryCheckbox(this)" id="${localCountry.code}"><img src="/img/cross.svg" alt="Delete" style="max-width: 1rem;"> <img src="/img/flags/${localCountry.code}.png" alt="Flag" style="max-width: 1rem;"> <span class="country-name strike-link">${localCountry.name}</span></p></div>`);
 }
 
-// $("#country_selector").focusin(function(){
-//     $(".country-list").removeClass("hide");
-// });
-
-// $("#country_selector").focusout(function(){
-//     $(".country-list").addClass("hide");
-// });
-
 function countryCheckbox(element){
     globalChart.data.datasets.forEach(function(dataset, index){
         if(dataset.label == `${text.CONFIRMED} ${ $("#" + element.id).children(".country-name").text() }`){
@@ -335,50 +336,10 @@ function countryCheckbox(element){
     });
 };
 
-// Split(['#section1', '#section2'], {
-//     sizes: [25, 75],
-//     direction: 'horizontal',
-//     minSize: 300
-// });
-
-// if($( window ).width() >= 768){
-//     $("#section1").css("height", $("#section2").css("height"));
-// }
-
 $("#saveAsImage").click(function(){
     $(this).attr("href", globalChart.toBase64Image());
-    // var canvas = document.getElementById("canvas"),
-    //     ctx = canvas.getContext("2d");
-
-    // ctx.fillStyle = "#ffffff";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // canvas.toBlob(function(blob){
-    //     saveAs(blob, "grafica.png");
-    // });
-    // alert("Not yet available. Right click on the chart and choose \"Save as image\" for a similar result!");
-    // saveAs(globalChart.toBase64Image(), text.FILE_NAME + ".jpg");
-
-    // let canvas = document.getElementById("globalChart");
-    // var image = canvas.toDataURL("image/jpeg", 0.9);
-    // $("#saveAsImage").attr("href", image);
-    // PNG TO JPEG!!!
-    // RISOLVI SFONDO!!
-    // let oldColor = $("#globalChart").css("background-color");
-    // $("#globalChart").css("background-color", "white");
-    // var canvas = $("#globalChart").get(0);
-    // var dataURL = canvas.toDataURL('image/png');
-    // console.log(dataURL);
-
-    // $("#saveAsImage").attr("href", dataURL);
-    // $("#globalChart").css("background-color", oldColor);
 
 });
-
-// $("#saveAsImage").click(function(){
-//     let blob = document.getElementById("globalChart").toDataURL("image/png");
-//     saveAs(blob, "chart.png");
-// });
 
 function canvasToImage(canvas){
 	var image = new Image();

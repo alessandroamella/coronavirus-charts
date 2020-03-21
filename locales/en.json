@@ -10,7 +10,7 @@
     "SHOW_STATS": "Show Stats",
     "SELECTED_COUNTRIES": "Selected countries",
     "NO_COUNTRIES": "No country selected",
-    "LATEST_STATS": "Latest Coronavirus Stats",
+    "LATEST_STATS": "Coronavirus Charts - Latest Data",
     "CONFIRMED": "Confirmed cases in",
     "RECOVERIES": "Recoveries in",
     "DEATHS": "Deaths in",
@@ -36,5 +36,24 @@
     "ZOOM_RESET": "Reset zoom",
     "SAVE_AS_IMAGE": "Save as image",
     "INSTRUCTIONS": "Type the name of the country you want to see, then hit enter or press the \"Show Stats\" button.",
-    "ERROR_LETMEKNOW": "If you believe this is an error, please contact me and let me know"
+    "ERROR_LETMEKNOW": "If you believe this is an error, please contact me and let me know",
+    "info": {
+        "BACK_HOME": "Back to homepage",
+        "WEBSITE_INFO": "Website info",
+        "ABOUT_ME": {
+            "title": "About me",
+            "line1": "Hi! I'm Alessandro, Bitrey on the internet, a full-stack web developer based in Modena.",
+            "line2": "I've been focused on website creation for two years, from design to code, using the latest technologies and remaining oriented to the current demands of the internet world, especially mobile design.",
+            "line3": "If you need a website, don't hesitate to email me at"
+        },
+        "DATA_UPDATES": {
+            "title": "How is the data updated?",
+            "line1": "The data is automatically updated every hour, however new stats are sent only 3 times a day."
+        },
+        "DATA_SOURCE": {
+            "title": "But where does it come from?",
+            "line1": "It comes from The Center for Systems Science and Engineering (CSSE) of JHU."
+        },
+        "CREDITS": "Credits"
+    }
 }

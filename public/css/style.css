@@ -1,13 +1,36 @@
 body {
     background-color: #36A2FB;
     word-wrap: break-word;
+    background-image: url("/img/background.svg");
+}
+
+.navbar {
+    background-color: #88c9ff70;
+    margin-bottom: 1rem;
 }
 
 .section {
     background-color: white;
     border-radius: 1rem;
     padding: 1rem;
-    box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.301);
+    box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.big-section {
+    background-color: white;
+    border-radius: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.small-section {
+    background-color: white;
+    border-radius: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .country-name {
@@ -20,6 +43,17 @@ body {
         height: 70vh;
         width: 90%
     }
+
+    .big-section {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+@media only screen and (min-width: 992px){
+    .big-section {
+        width: 50vw;
+    }
 }
 
 @media not screen and (min-width: 768px){
@@ -27,6 +61,11 @@ body {
         position: relative;
         height: 60vh;
         width: 100%
+    }
+
+    .big-section {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 

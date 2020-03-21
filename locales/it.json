@@ -10,7 +10,7 @@
     "SELECTED_COUNTRIES": "Nazioni selezionate",
     "SHOW_STATS": "Mostra Dati",
     "NO_COUNTRIES": "Nessuna nazione selezionata",
-    "LATEST_STATS": "Ultimi Dati sul Coronavirus",
+    "LATEST_STATS": "Grafici Coronavirus - Ultimi Dati",
     "CONFIRMED": "Casi confermati in",
     "RECOVERIES": "Guarigioni in",
     "DEATHS": "Morti in",
@@ -36,5 +36,24 @@
     "ZOOM_RESET": "Resetta zoom",
     "SAVE_AS_IMAGE": "Salva come immagine",
     "INSTRUCTIONS": "Scrivi il nome della nazione che vuoi vedere (in inglese), poi premi invio o il tasto \"Mostra Dati\".",
-    "ERROR_LETMEKNOW": "Se credi che sia un errore, per favore contattami e fammelo sapere"
+    "ERROR_LETMEKNOW": "Se credi che sia un errore, per favore contattami e fammelo sapere",
+    "info": {
+        "BACK_HOME": "Torna alla homepage",
+        "WEBSITE_INFO": "Informazioni sul sito",
+        "ABOUT_ME": {
+            "title": "Su di me",
+            "line1": "Ciao! Sono Alessandro, su internet Bitrey, un programmatore web full-stack di Modena.",
+            "line2": "Da due anni mi occupo della creazione di siti, dal design al codice, usando le ultime tecnologie e restando orientato sulle richieste attuali del mondo di internet, in primo luogo il mobile design.",
+            "line3": "Se hai bisogno di un sito web, non esitare a contattarmi su"
+        },
+        "DATA_UPDATES": {
+            "title": "Come vengono aggiornati i dati?",
+            "line1": "I dati vengono aggiornati automaticamente ogni ora, tuttavia nuove statistiche vengono inviate solo 3 volte al giorno."
+        },
+        "DATA_SOURCE": {
+            "title": "Ma da dove vengono presi?",
+            "line1": "Vengono presi da Center for Systems Science and Engineering (CSSE) di JHU."
+        },
+        "CREDITS": "Strumenti usati"
+    }
 }
