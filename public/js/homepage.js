@@ -267,7 +267,7 @@ function newChart(){
                 zoom: {
                     pan: {
                         enabled: true,
-                        mode: "xy",
+                        mode: "x",
                         speed: 10,
                         threshold: 10
                     },
