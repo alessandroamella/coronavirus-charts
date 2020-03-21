@@ -181,6 +181,10 @@ app.use(function(req, res, next){
     if(req.cookies.lang == "it" || req.cookies.lang == "en"){
         req.lang = req.cookies.lang;
     } else {
+        console.log("\n\n\n\n");
+        console.log("req.headers[\"accept-language\"]");
+        console.log(req.headers["accept-language"]);
+        console.log("\n\n\n\n");
         if(req.headers["accept-language"]){
             let localLang = req.headers["accept-language"].split(",")[1].split(";")[0];
             if(localLang == "it" || localLang == "en"){
