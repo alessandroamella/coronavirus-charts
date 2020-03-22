@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /info
+
+Sitemap: https://www.coronavirus-charts.com/sitemap.xml
