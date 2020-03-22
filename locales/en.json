@@ -63,7 +63,20 @@
             "line1": "It comes from The Center for Systems Science and Engineering (CSSE) of JHU."
         },
         "CREDITS": "Credits",
-        "PRIVACY_POLICY": "Privacy policy",
-        "TERMS_AND_CONDITIONS": "Terms and conditions"
+        "PRIVACY_POLICY": {
+            "title": "Privacy policy",
+            "line1": "The language and the last nation selected are saved in the browser cookies.",
+            "line2": "If those cookies aren't found, an IP address geolocalization is made.",
+            "line3": "Some tools used in this website might use cookies for various purposes (to which I'm not responsible).",
+            "line4": "To learn more, please read their privacy policy on their websites."
+        },
+        "TERMS_AND_CONDITIONS": {
+            "title": "Terms and conditions",
+            "line1": "This website offers a free service for a graphical display of statistics on COVID-19.",
+            "line2": "The data is taken from a third party website and its accuracy is not guaranteed.",
+            "line3": "I'm not responsible for any damage this website might cause.",
+            "line4": "This website is owned by Alessandro Amella.",
+            "line5": "The terms and conditions may undergo changes without further notice."
+        }
     }
 }

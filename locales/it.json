@@ -63,7 +63,20 @@
             "line1": "Vengono presi da Center for Systems Science and Engineering (CSSE) di JHU."
         },
         "CREDITS": "Strumenti usati",
-        "PRIVACY_POLICY": "Informativa sulla privacy",
-        "TERMS_AND_CONDITIONS": "Termini e condizioni"
+        "PRIVACY_POLICY": {
+            "title": "Informativa sulla privacy",
+            "line1": "Vengono salvati lingua e ultima nazione selezionata nei cookies.",
+            "line2": "Se questi cookies non sono presenti, viene effettuata una geolocalizzazione dell'indirizzo IP.",
+            "line3": "Alcuni strumenti utilizzati potrebbero far uso dei cookies per diversi scopi (a cui non sono responsabile).",
+            "line4": "Per saperne di più si prega di leggere le informative sulla privacy dei rispettivi strumenti."
+        },
+        "TERMS_AND_CONDITIONS": {
+            "title": "Termini e condizioni",
+            "line1": "Questo sito offre un servizio gratuito per la visualizzazione grafica delle statistiche del COVID-19.",
+            "line2": "I dati vengono presi da terze parti e non è garantita la loro correttezza.",
+            "line3": "Non sono responsabile per qualunque danno il sito possa causare.",
+            "line4": "Il sito è di proprietà di Alessandro Amella.",
+            "line5": "I termini e condizioni possono subire cambiamenti senza preavviso."
+        }
     }
 }
