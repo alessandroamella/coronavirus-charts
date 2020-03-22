@@ -46,9 +46,14 @@
             "title": "Su di me",
             "line1": "Ciao! Sono Alessandro, su internet Bitrey, un programmatore web full-stack di Modena.",
             "line2": "Da due anni mi occupo della creazione di siti, dal design al codice, usando le ultime tecnologie e restando orientato sulle richieste attuali del mondo di internet, in primo luogo il mobile design.",
-            "line3": "Se hai bisogno di un sito web, non esitare a contattarmi!"
+            "line3": "Se hai bisogno di un sito web, non esitare a contattarmi!",
+            "line4": "(Contatti - Informazioni sullo sviluppatore)."
         },
-        "CONTACTS": "Contatti",
+        "CONTACTS": {
+            "title": "Contatti",
+            "line1": "Informazioni sul sito",
+            "line2": "Informazioni sullo sviluppatore"
+        },
         "DATA_UPDATES": {
             "title": "Come vengono aggiornati i dati?",
             "line1": "I dati vengono aggiornati automaticamente ogni ora, tuttavia nuove statistiche vengono inviate solo 3 volte al giorno."

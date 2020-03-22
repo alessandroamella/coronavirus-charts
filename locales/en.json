@@ -46,9 +46,14 @@
             "title": "About me",
             "line1": "Hi! I'm Alessandro, Bitrey on the internet, a full-stack web developer based in Modena.",
             "line2": "I've been focused on website creation for two years, from design to code, using the latest technologies while remaining oriented to the current demands of the internet world, especially mobile design.",
-            "line3": "If you need a website, don't hesitate to email me!"
+            "line3": "If you need a website, don't hesitate to email me!",
+            "line4": "(Contacts - Questions for the developer)."
         },
-        "CONTACTS": "Contacts",
+        "CONTACTS": {
+            "title": "Contacts",
+            "line1": "Questions about the website",
+            "line2": "Questions for the developer"
+        },
         "DATA_UPDATES": {
             "title": "How is the data updated?",
             "line1": "The data is automatically updated every hour, however new stats are sent only 3 times a day."
