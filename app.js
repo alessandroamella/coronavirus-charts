@@ -174,67 +174,72 @@ function getIp(req, res, callback){
     }
 }
 
-app.use(function(req, res, next){
-    res.locals.path = req.path;
-    if(req.query.lang == "it" || req.query.lang == "en"){
-        res.cookie("lang", req.query.lang);
-        res.locals.text = lang[req.query.lang];
-        next();
-        return false;
-    }
+app.get("/info", function(req, res){
     if(req.cookies.lang == "it" || req.cookies.lang == "en"){
-        req.lang = req.cookies.lang;
-    } else {
-        if(req.locale.language){
-            let localLang = req.locale.language;
-            if(localLang == "it" || localLang == "en"){
-                res.cookie("lang", localLang);
-                req.lang = localLang;
-            } else {
-                req.lang = "en";
-            }
-        } else {
-            req.lang = "en";
+        res.redirect("/info/" + req.cookies.lang);
+        return false;
+    } else if(req.locale.language){
+        let localLang = req.locale.language;
+        if(localLang == "it" || localLang == "en"){
+            res.cookie("lang", localLang);
+            res.redirect("/info/" + localLang);
+            return false;
         }
     }
-    res.locals.text = lang[req.lang];
-    next();
+    res.redirect("/info/en");
+});
+
+app.get("/info/:lang", function(req, res){
+    res.locals.path = "/info/";
+    if(req.params.lang == "it" || req.params.lang == "en"){
+        res.cookie("lang", req.params.lang);
+        res.render("info", {text: lang[req.params.lang]});
+    } else {
+        res.redirect("/info");
+    }
 });
 
 app.get("/", function(req, res){
-    let localCountry;
-    getIp(req, res, function(res, json){
-        if(!json){
-            localCountry = "badcountry";
+    if(req.cookies.lang == "it" || req.cookies.lang == "en"){
+        res.redirect("/" + req.cookies.lang);
+        return false;
+    } else if(req.locale.language){
+        let localLang = req.locale.language;
+        if(localLang == "it" || localLang == "en"){
+            res.cookie("lang", localLang);
+            res.redirect("/" + localLang);
             return false;
         }
-        if(json.country){
-            localCountry = {
-                name: json.country,
-                code: json.countryCode.toLowerCase()
-            };
-        } else {
-            localCountry = {
-                name: "Global",
-                code: "global"
-            };
-        }
-        res.render("index", {localCountry: localCountry});
-    });
-    // getIp(req, res, function(res, json){
-    //     if(!json){
-    //         res.send("Error while loading the homepage. Sorry for the inconvenience!");
-    //         return false;
-    //     }
-    //     if(json.country){
-    //     } else {
-    //         res.render("index", { stats: JSON.stringify(stats["United Kingdom"]), country: {name: "United Kingdom", code: "gb"} });
-    //     }
-    // });
+    }
+    res.redirect("/en");
 });
 
-app.get("/info", function(req, res){
-    res.render("info");
+app.get("/:lang", function(req, res){
+    res.locals.path = "/";
+    if(req.params.lang == "it" || req.params.lang == "en"){
+        res.cookie("lang", req.params.lang);
+        let localCountry;
+        getIp(req, res, function(res, json){
+            if(!json){
+                localCountry = "badcountry";
+                return false;
+            }
+            if(json.country){
+                localCountry = {
+                    name: json.country,
+                    code: json.countryCode.toLowerCase()
+                };
+            } else {
+                localCountry = {
+                    name: "Global",
+                    code: "global"
+                };
+            }
+            res.render("index", {localCountry: localCountry, text: lang[req.params.lang]})
+        });
+    } else {
+        res.redirect("/");
+    }
 });
 
 app.get("/getData/:country", async function(req, res){

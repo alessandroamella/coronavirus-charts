@@ -467,9 +467,9 @@ $(document).ready(function(){
         if(localCountry == "badcountry"){
             localCountry = { name: "Global", code: "global" };
         }
-        $("#localCountry").remove();
         $("#country_selector").countrySelect("setCountry", localCountry.name);
     }
+    $("#localCountry").remove();
 });
     
 $("#zoom").on("change", function(){
