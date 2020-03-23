@@ -2,6 +2,10 @@
     "TITLE": "COVID-19 Coronavirus Stats with Charts",
     "DESCRIPTION": "A free tool to visualize the latest stats on Coronavirus for any country with charts",
     "TITLE_HOMEPAGE": "COVID-19 Statistics",
+    "og": {
+        "title": "Coronavirus Stats with Charts",
+        "description": "Charts to visualize the cases of the Coronavirus for every nation in the world"
+    },
     "FILE_NAME": "Coronavirus Chart coronavirus-charts.com",
     "HOME": "Home",
     "INFO": "Info",

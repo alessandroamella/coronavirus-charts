@@ -2,6 +2,10 @@
     "TITLE": "COVID-19 Coronavirus Statistiche con Grafici",
     "DESCRIPTION": "Uno strumento gratuito per visualizzare le ultime statistiche sul Coronavirus per ogni nazione con grafici",
     "TITLE_HOMEPAGE": "Statistiche sul COVID-19",
+    "og": {
+        "title": "Statistiche sul Coronavirus con Grafici",
+        "description": "Grafici per vedere i casi del Coronavirus di tutte le nazioni del mondo"
+    },
     "FILE_NAME": "Coronavirus Chart coronavirus-charts.com",
     "HOME": "Homepage",
     "INFO": "Informazioni",
