@@ -181,8 +181,8 @@ Chart.pluginService.register({
 
 let watermarkProp = {};
 if($(document).width() > $(document).height()){
-    watermarkProp.width = $(document).width() / 5;
-    watermarkProp.height = $(document).width() / 20;
+    watermarkProp.width = $(document).width() / 8;
+    watermarkProp.height = $(document).width() / 32;
     watermarkProp.pr = 100;
     watermarkProp.pb = 100;
     watermarkProp.opacity = 0.2;
