@@ -74,6 +74,13 @@ async function fetchData(callback){
                 stats = json;
                 let countriesData = [];
                 for(data in json){
+                    if(!json[data]){
+                        console.log(new Date());
+                        console.log("Invalid JSON data:");
+                        console.log(json[data]);
+                        console.log("Aborting fetch!");
+                        return false;
+                    }
                     json[data].forEach(function(dayData){
                         if(global[dayData.date]){
                             global[dayData.date].confirmed += dayData.confirmed;
@@ -231,8 +238,8 @@ app.get("/:lang", function(req, res){
                 };
             } else {
                 localCountry = {
-                    name: "Global",
-                    code: "global"
+                    name: "Italy",
+                    code: "it"
                 };
             }
             res.render("index", {localCountry: localCountry, text: lang[req.params.lang]})

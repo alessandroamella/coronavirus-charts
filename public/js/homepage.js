@@ -465,7 +465,7 @@ $(document).ready(function(){
     } else {
         localCountry = JSON.parse($("#localCountry").text());
         if(localCountry == "badcountry"){
-            localCountry = { name: "Global", code: "global" };
+            localCountry = { name: "Italy", code: "italy" };
         }
         $("#country_selector").countrySelect("setCountry", localCountry.name);
     }
