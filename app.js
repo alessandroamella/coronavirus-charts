@@ -13,7 +13,7 @@ require("dotenv").config();
 const localeMiddleware = require('express-locale');
 
 // Require languages
-let lang = {
+constlang = {
     en: require("./locales/en.json"),
     it: require("./locales/it.json")
 }
@@ -47,7 +47,7 @@ app.use(methodOverride("_method"));
 
 let stats;
 
-let statSchema = new mongoose.Schema({
+const statSchema = new mongoose.Schema({
     lastUpdated: { type: Date, default: Date.now },
     countries: [{
         country: String,
@@ -59,7 +59,7 @@ let statSchema = new mongoose.Schema({
         }]
     }]
 })
-let Stat = mongoose.model("Stat", statSchema);
+const Stat = mongoose.model("Stat", statSchema);
 
 let global = {};
 
@@ -118,7 +118,7 @@ async function fetchData(callback){
                     country: "Global",
                     data: stats["Global"]
                 });
-                let fetchedStats = new Stat({
+                const fetchedStats = new Stat({
                     countries: countriesData
                 });
                 Stat.findOne({}, {}, { sort: { 'lastUpdated' : -1 } }, function(err, foundStat){
@@ -137,7 +137,7 @@ async function fetchData(callback){
     }
 }
 
-let fetchDataSchedule = schedule.scheduleJob("0 0 * * * *", function(fireDate){
+const fetchDataSchedule = schedule.scheduleJob("0 0 * * * *", function(fireDate){
     fetchData();
 });
 
@@ -189,7 +189,7 @@ app.get("/info", function(req, res){
         res.redirect("/info/" + req.cookies.lang);
         return false;
     } else if(req.locale.language){
-        let localLang = req.locale.language;
+        const localLang = req.locale.language;
         if(localLang == "it" || localLang == "en"){
             res.cookie("lang", localLang);
             res.redirect("/info/" + localLang);
@@ -214,7 +214,7 @@ app.get("/", function(req, res){
         res.redirect("/" + req.cookies.lang);
         return false;
     } else if(req.locale.language){
-        let localLang = req.locale.language;
+        const localLang = req.locale.language;
         if(localLang == "it" || localLang == "en"){
             res.cookie("lang", localLang);
             res.redirect("/" + localLang);
