@@ -13,7 +13,7 @@ require("dotenv").config();
 const localeMiddleware = require('express-locale');
 
 // Require languages
-constlang = {
+const lang = {
     en: require("./locales/en.json"),
     it: require("./locales/it.json")
 }
