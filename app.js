@@ -68,11 +68,12 @@ async function fetchData(callback){
         fetch('https://pomber.github.io/covid19/timeseries.json')
             .then(res => res.json())
             .then(function(json){
-                // fs.writeFile(`data/data-${Date.now()}.json`, JSON.stringify(json, null, 2), function(err){{
-                // if (err) throw err;
-                // console.log(`The data file has been saved as data/data-${Date.now()}.json`);
-                stats = json;
+                
                 let countriesData = [];
+
+                let tempGlobal = {};
+
+                // Verifica che i dati siano validi, se sono presenti dei null, fai return false
                 for(data in json){
                     if(!json[data]){
                         console.log(new Date());
@@ -82,12 +83,12 @@ async function fetchData(callback){
                         return false;
                     }
                     json[data].forEach(function(dayData){
-                        if(global[dayData.date]){
-                            global[dayData.date].confirmed += dayData.confirmed;
-                            global[dayData.date].deaths += dayData.deaths;
-                            global[dayData.date].recovered += dayData.recovered;
+                        if(tempGlobal[dayData.date]){
+                            tempGlobal[dayData.date].confirmed += dayData.confirmed;
+                            tempGlobal[dayData.date].deaths += dayData.deaths;
+                            tempGlobal[dayData.date].recovered += dayData.recovered;
                         } else {
-                            global[dayData.date] = {
+                            tempGlobal[dayData.date] = {
                                 confirmed: dayData.confirmed,
                                 deaths: dayData.deaths,
                                 recovered: dayData.recovered
@@ -99,6 +100,12 @@ async function fetchData(callback){
                         data: json[data]
                     });
                 }
+
+                global = tempGlobal;
+
+                // Con i dati validi, aggiorna la variabile delle stats
+                stats = json;
+
                 stats["Global"] = Object.keys(global).map(function(k){
                     return {
                         date: k,
@@ -107,7 +114,6 @@ async function fetchData(callback){
                         recovered: global[k].recovered
                     }
                 });
-                console.log("Fetched new data!");
                 countriesData.push({
                     country: "Global",
                     data: stats["Global"]
@@ -120,8 +126,6 @@ async function fetchData(callback){
                     if(!foundStat || foundStat.countries[0].data.length != fetchedStats.countries[0].data.length){
                         console.log("Saved new data!");
                         fetchedStats.save(function(err){ if(err){console.log(err)}});
-                    } else {
-                        console.log("New data wasn't saved (same length)");
                     }
                 });
                 if(callback){
@@ -135,7 +139,6 @@ async function fetchData(callback){
 
 let fetchDataSchedule = schedule.scheduleJob("0 0 * * * *", function(fireDate){
     fetchData();
-    console.log('Data save was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
 });
 
 try {
