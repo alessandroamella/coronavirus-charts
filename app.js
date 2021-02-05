@@ -2,10 +2,10 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const fetch = require("node-fetch");
-const fs = require("fs");
+// const fs = require("fs");
 const schedule = require("node-schedule");
 const requestIp = require("request-ip");
 const diff = require("deep-diff");
@@ -29,10 +29,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // MONGOOSE SETUP
-mongoose.set("useNewUrlParser", true);
-mongoose.set("useFindAndModify", false);
-mongoose.set("useCreateIndex", true);
-mongoose.set("useUnifiedTopology", true);
+// mongoose.set("useNewUrlParser", true);
+// mongoose.set("useFindAndModify", false);
+// mongoose.set("useCreateIndex", true);
+// mongoose.set("useUnifiedTopology", true);
 
 // CONNECT TO MONGODB
 // mongoose.connect(process.env.MONGODB_URI, function(){
@@ -48,23 +48,23 @@ app.use(methodOverride("_method"));
 
 let stats;
 
-const statSchema = new mongoose.Schema({
-    lastUpdated: { type: Date, default: Date.now },
-    countries: [
-        {
-            country: String,
-            data: [
-                {
-                    date: Date,
-                    confirmed: Number,
-                    deaths: Number,
-                    recovered: Number
-                }
-            ]
-        }
-    ]
-});
-const Stat = mongoose.model("Stat", statSchema);
+// const statSchema = new mongoose.Schema({
+//     lastUpdated: { type: Date, default: Date.now },
+//     countries: [
+//         {
+//             country: String,
+//             data: [
+//                 {
+//                     date: Date,
+//                     confirmed: Number,
+//                     deaths: Number,
+//                     recovered: Number
+//                 }
+//             ]
+//         }
+//     ]
+// });
+// const Stat = mongoose.model("Stat", statSchema);
 
 let global = {};
 
@@ -171,11 +171,12 @@ async function fetchData(callback) {
     }
 }
 
-const fetchDataSchedule = schedule.scheduleJob("0 0 * * * *", function (
-    fireDate
-) {
-    fetchData();
-});
+const fetchDataSchedule = schedule.scheduleJob(
+    "0 0 * * * *",
+    function (fireDate) {
+        fetchData();
+    }
+);
 
 try {
     fetch("https://pomber.github.io/covid19/timeseries.json")
