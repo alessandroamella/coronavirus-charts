@@ -90,6 +90,8 @@ async function fetchData(callback) {
                         return false;
                     }
                     json[data].forEach(function (dayData, i) {
+                        if (dayData.confirmed < 0)
+                            console.error("dayData.confirmed < 0");
                         if (pastDayData) {
                             diff(pastDayData, dayData);
                         }
